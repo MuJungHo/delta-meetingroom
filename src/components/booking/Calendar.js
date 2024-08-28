@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     width: '100%',
     flex: '1 1 auto',
-    height: '100%'
+    height: 'calc(100% - 33px)'
   },
   spacer: {
     flex: 1
@@ -40,7 +40,13 @@ export default ({
   return (
     <div className={classes.container}>
       {
-        dates.map(date => <Cell key={date} date={date} />)
+        dates
+          .map((date, index) =>
+            <Cell
+              index={index}
+              key={date}
+              date={date}
+            />)
       }
     </div>
   )

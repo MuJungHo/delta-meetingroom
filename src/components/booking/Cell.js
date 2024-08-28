@@ -28,10 +28,20 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default ({ date }) => {
+export default ({ date, index }) => {
   const classes = useStyles();
   const isToday = moment(date).isSame(new Date(), 'day');
   const { openDialog } = useContext(GlobalContext);
+
+  const weekday = {
+    0: '週日',
+    1: '週一',
+    2: '週二',
+    3: '週三',
+    4: '週四',
+    5: '週五',
+    6: '週六',
+  }
 
   const handleOpenDialog = () => {
     openDialog({
@@ -49,10 +59,11 @@ export default ({ date }) => {
     <div className={classes.cell}
       onClick={handleOpenDialog}
     >
+      {index < 7 && <p style={{ margin: '8px 0', color: '#70757a' }}>{weekday[index]}</p>}
       {
         isToday
           ? <Avatar className={classes.avatar}>{moment(date).format("D")}</Avatar>
-          : <p style={{ marginTop: 8 }}>{moment(date).format("D")}</p>
+          : <p style={{ color: 'rgb(60,64,67)', marginTop: 8 }}>{moment(date).format("D")}</p>
       }
     </div>
   )

@@ -45,12 +45,13 @@ export default ({
   const { closeDialog, t } = useContext(GlobalContext);
 
   const [state, setState] = React.useState({
-    type: "once", 
-    month: [], 
+    type: "once",
+    month: [],
     week: [],
     starttime: moment(date).valueOf(),
     endtime: moment(date).endOf('day').valueOf(),
-    interval: 1
+    interval: 1,
+    staff: ""
   })
 
   const config = {
@@ -93,6 +94,23 @@ export default ({
           fullWidth
           required
           style={{ marginBottom: 20 }}>
+          <InputLabel>{t("staff")}</InputLabel>
+          <Select
+            value={state.staff}
+            displayEmpty
+            onChange={e => setState({ ...state, staff: e.target.value })}
+          >
+            <MenuItem value="Chi">CHI</MenuItem>
+            <MenuItem value="CW">CW</MenuItem>
+            <MenuItem value="DUCK">DUCK</MenuItem>
+            <MenuItem value="Roger">Roger</MenuItem>
+            <MenuItem value="Ron">Ron</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl
+          fullWidth
+          required
+          style={{ marginBottom: 20 }}>
           <InputLabel>{t("type")}</InputLabel>
           <Select
             value={state.type}
@@ -103,7 +121,8 @@ export default ({
             <MenuItem value="weekly">Weekly</MenuItem>
             <MenuItem value="monthly">Monthly</MenuItem>
           </Select>
-        </FormControl>{config[state.type].includes("starttime") &&
+        </FormControl>
+        {config[state.type].includes("starttime") &&
           <div className={classes.info}>
             <Text>{t("starttime")}</Text>
             <TextField
