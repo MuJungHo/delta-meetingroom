@@ -13,13 +13,6 @@ const routes = [
     icon: ManageAccount,
     sider: true
   },
-  {
-    path: "/booking",
-    name: "_booking",
-    component: Booking,
-    icon: ManageAccount,
-    sider: true
-  },
 ]
 
 export default routes

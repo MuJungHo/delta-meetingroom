@@ -17,23 +17,8 @@ import {
 //   MenuItem
 // } from '@material-ui/core';
 
-import { getKey } from '../utils/apis';
 import UserSection from "../components/User/UserSection";
-const CryptoJS = require("crypto-js");
-
-const getAESEncrypt = async (txt) => {
-  const timestamp = Date.now();
-  const { secretkey } = await getKey({ timestamp });
-  const cipher = CryptoJS.AES.encrypt(
-    txt,
-    CryptoJS.enc.Utf8.parse(secretkey),
-    {
-      iv: CryptoJS.enc.Utf8.parse(""),
-      mode: CryptoJS.mode.ECB
-    }
-  )
-  return cipher.toString()
-}
+import { api } from "../utils/apis";
 
 const User = () => {
   const { t, openDialog, closeDialog, authedApi, openSnackbar, openWarningDialog } = useContext(GlobalContext);
@@ -49,15 +34,17 @@ const User = () => {
 
   const [accountList, setAccountList] = React.useState([]);
 
-  const getAccountList = useCallback(async () => {
-    setAccountList([])
+  const getUserList = useCallback(async () => {
+    let _account = await api().getUserList()
+    const account = _account.map(a => ({ ...a, _id: a.id }))
+    setAccountList(account)
     setTotal(0)
   }, [filter])
 
   React.useEffect(() => {
-    getAccountList()
-  }, [getAccountList])
-  
+    getUserList()
+  }, [getUserList])
+
   const openEditUserDialog = (user) => {
     openDialog({
       title: t("edit-thing", { thing: t("account") }),
@@ -73,17 +60,8 @@ const User = () => {
   }
 
   const handleEditUserAccount = async (user) => {
-
-    const aesEncryptPassword = await getAESEncrypt(user.password)
-
-
-    await authedApi.postEditAccount({
-      data: {
-        ...user,
-        password: user.password ? aesEncryptPassword : undefined
-      }
-    })
-    getAccountList()
+    await api().putUser({ data: { ...user }, id: user.id })
+    getUserList()
     closeDialog()
     openSnackbar({
       severity: "success",
@@ -92,17 +70,8 @@ const User = () => {
   }
 
   const handleAddUserAccount = async (user) => {
-
-    const aesEncryptPassword = await getAESEncrypt(user.password)
-
-
-    await authedApi.postAddAccount({
-      data: {
-        ...user,
-        password: aesEncryptPassword
-      }
-    })
-    getAccountList()
+    await api().postUser({ data: { ...user } })
+    getUserList()
     closeDialog()
     openSnackbar({
       severity: "success",
@@ -111,8 +80,8 @@ const User = () => {
   }
 
   const handleDeleteAccount = async user => {
-    await authedApi.deleteAccount({ accountid: user.accountid })
-    getAccountList()
+    await authedApi.deleteUser({ id: user.id })
+    getUserList()
     closeDialog()
     openSnackbar({
       severity: "success",
@@ -129,20 +98,19 @@ const User = () => {
   }
 
   return (
-    <Paper>
+    <Paper style={{ margin: 20 }}>
       <Table
-        title={t("thing-management", { thing: t("account") })}
+        title={t("thing-management", { thing: t("user") })}
         rows={accountList}
         columns={[
           { key: 'name', label: t('name') },
           { key: 'email', label: t('email') },
-          { key: 'rolename', label: t('rolename') },
         ]}
         checkable={false}
         order={filter.order}
         sort={filter.sort}
         total={total}
-        onSearchClick={getAccountList}
+        onSearchClick={getUserList}
         onClearClick={() => setFilter({
           order: "desc",
           sort: "datetime",

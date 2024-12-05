@@ -14,7 +14,7 @@ import {
   Card
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../images/delta.svg';
-import { getKey, tokenlogin } from '../utils/apis';
+
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -76,44 +76,6 @@ const Login = () => {
   const { login, token, setKeep, keep, } = useContext(AuthContext);
   const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-
-    const timestamp = Date.now();
-    const key = await getKey({ timestamp })
-    const secretkey = key?.secretkey || ""
-
-    const timeemail = md5(
-      timestamp + '#' + md5(secretkey + '#' + email.toLowerCase()),
-    );
-
-    const timepassword = md5(
-      timestamp + '#' + md5(secretkey + '#' + password),
-    );
-
-    const credentials = Buffer.from(
-      timeemail + ':' + timepassword,
-    ).toString('base64');
-
-    // const credentials = CryptoJS.enc.Base64.stringify(word);
-    const result = await tokenlogin({ credentials, timestamp })
-      .catch(error => {
-        const json = JSON.parse(error.response.statusText);
-        if (json.code) {
-
-          openSnackbar({
-            severity: "error",
-            message: t(json.code)
-          })
-        }
-      })
-    const Token = result?.Token;
-    const Accountid = result?.Accountid;
-    const Roleid = result?.Roleid;
-
-    if (Token && Accountid) login(Token, Accountid, Roleid, email);
-  };
-
   if (token) {
     return <Redirect to="/" />
   }
@@ -125,7 +87,7 @@ const Login = () => {
   return (
     <div className={classes.container}>
       <Card className={classes.card}>
-        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+        <form className={classes.form} noValidate onSubmit={() => {}}>
           <h1 className={classes.title}>{t('welcome')}</h1>
           <Logo style={{
             height: 40,

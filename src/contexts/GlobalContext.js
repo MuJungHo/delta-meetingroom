@@ -154,6 +154,7 @@ function GlobalProvider({ children, ...rest }) {
         </Snackbar>
         <Dialog
           {...dialog}
+          warning=""
           onClose={() => setDialog({ ...dialog, open: false })}
           open={dialog.open}
         >
