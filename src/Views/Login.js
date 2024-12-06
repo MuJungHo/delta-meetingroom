@@ -14,7 +14,7 @@ import {
   Card
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../images/delta.svg';
-
+import { api } from "../utils/apis";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -62,19 +62,14 @@ const useStyles = makeStyles(() => ({
   locale: {
   }
 }))
-// const user = "user";
-// const ron = "ron";
-// const mmm = "mmm";
-// const admin = "admin@bb.cc"
-// const _password = "Aa123456"
+
 const Login = () => {
   const classes = useStyles();
-  const md5 = require("md5");
-  const [email, setEmail] = useState("");
+  const [account, setAccount] = useState("");
   const [password, setPassword] = useState("");
 
   const { login, token, setKeep, keep, } = useContext(AuthContext);
-  const { t, changeLocale, locale, openSnackbar } = useContext(GlobalContext);
+  const { t, changeLocale, locale } = useContext(GlobalContext);
 
   if (token) {
     return <Redirect to="/" />
@@ -84,10 +79,19 @@ const Login = () => {
     changeLocale(e.target.value)
   }
 
+  const handleLogin = async (event) => {
+    event.preventDefault();
+
+    const { token } = await api.postAuthLogin({ data: { account, password } });
+
+    login(token);
+    // let _account = await api().getUserList()
+  }
+
   return (
     <div className={classes.container}>
       <Card className={classes.card}>
-        <form className={classes.form} noValidate onSubmit={() => {}}>
+        <form className={classes.form} noValidate onSubmit={handleLogin}>
           <h1 className={classes.title}>{t('welcome')}</h1>
           <Logo style={{
             height: 40,
@@ -100,9 +104,9 @@ const Login = () => {
               variant="outlined"
               required
               fullWidth
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              label={t("email")}
+              value={account}
+              onChange={e => setAccount(e.target.value)}
+              label={t("account")}
               style={{ marginBottom: 20 }}
             />
           </FormControl>

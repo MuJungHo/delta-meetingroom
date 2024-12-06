@@ -20,25 +20,32 @@ import {
 import UserSection from "../components/User/UserSection";
 import { api } from "../utils/apis";
 
+const initFilter = {
+  order: "asc",
+  sort: "name",
+  keyword: "",
+  limit: 5,
+  page: 0,
+}
+
 const User = () => {
-  const { t, openDialog, closeDialog, authedApi, openSnackbar, openWarningDialog } = useContext(GlobalContext);
-  const { role, accountid } = useContext(AuthContext);
+  const { t, openDialog, closeDialog, openSnackbar, openWarningDialog } = useContext(GlobalContext);
   const [total, setTotal] = React.useState(0);
-  const [filter, setFilter] = React.useState({
-    order: "desc",
-    sort: "datetime",
-    keyword: "",
-    limit: 10,
-    page: 1,
-  });
+  const [filter, setFilter] = React.useState(initFilter);
 
   const [accountList, setAccountList] = React.useState([]);
 
   const getUserList = useCallback(async () => {
-    let _account = await api().getUserList()
-    const account = _account.map(a => ({ ...a, _id: a.id }))
-    setAccountList(account)
-    setTotal(0)
+    let { rows, count } = await api.getUserList({
+      limit: filter.limit,
+      page: filter.page,
+      keyword: filter.keyword,
+      order: filter.order,
+      sort: filter.sort
+    })
+    const _rows = rows.map(a => ({ ...a, _id: a.id }))
+    setAccountList(_rows)
+    setTotal(count)
   }, [filter])
 
   React.useEffect(() => {
@@ -47,20 +54,20 @@ const User = () => {
 
   const openEditUserDialog = (user) => {
     openDialog({
-      title: t("edit-thing", { thing: t("account") }),
+      title: t("edit-thing", { thing: t("user") }),
       section: <UserSection onConfirm={handleEditUserAccount} user={user} />
     })
   }
 
   const openAddUserDialog = () => {
     openDialog({
-      title: t("add-thing", { thing: t("account") }),
+      title: t("add-thing", { thing: t("user") }),
       section: <UserSection onConfirm={handleAddUserAccount} />
     })
   }
 
   const handleEditUserAccount = async (user) => {
-    await api().putUser({ data: { ...user }, id: user.id })
+    await api.putUser({ data: { ...user }, id: user.id })
     getUserList()
     closeDialog()
     openSnackbar({
@@ -70,7 +77,7 @@ const User = () => {
   }
 
   const handleAddUserAccount = async (user) => {
-    await api().postUser({ data: { ...user } })
+    await api.postUser({ data: { ...user } })
     getUserList()
     closeDialog()
     openSnackbar({
@@ -80,7 +87,7 @@ const User = () => {
   }
 
   const handleDeleteAccount = async user => {
-    await authedApi.deleteUser({ id: user.id })
+    await api.deleteUser({ id: user.id })
     getUserList()
     closeDialog()
     openSnackbar({
@@ -104,32 +111,27 @@ const User = () => {
         rows={accountList}
         columns={[
           { key: 'name', label: t('name') },
+          { key: 'account', label: t('account') },
           { key: 'email', label: t('email') },
         ]}
         checkable={false}
         order={filter.order}
         sort={filter.sort}
+        rowsPerPage={filter.limit}
+        page={filter.page}
         total={total}
         onSearchClick={getUserList}
-        onClearClick={() => setFilter({
-          order: "desc",
-          sort: "datetime",
-          keyword: "",
-          limit: 10,
-          page: 1,
-        })}
+        onClearClick={() => setFilter(initFilter)}
         onPageChange={(page) => setFilter({ ...filter, page })}
-        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 1, limit })}
+        onRowsPerPageChange={(limit) => setFilter({ ...filter, page: 0, limit })}
         onSortChange={(order, sort) => setFilter({ ...filter, order, sort })}
         onKeywordSearch={(keyword) => setFilter({ ...filter, keyword })}
-        toolbarActions={role === 1 ? [
+        toolbarActions={[
           { name: t('add'), onClick: openAddUserDialog, icon: <AddBox /> },
-        ] : []}
-        rowActions={role === 1 ? [
+        ]}
+        rowActions={[
           { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
-        ] : [
-          { name: t('edit'), onClick: (e, row) => openEditUserDialog(row), icon: <BorderColorSharp />, showMenuItem: (row) => row.accountid === accountid },
         ]}
       // dense
       />

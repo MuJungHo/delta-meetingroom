@@ -8,7 +8,7 @@ import {
 const routes = [
   {
     path: "/user",
-    name: "_account",
+    name: "_user",
     component: User,
     icon: ManageAccount,
     sider: true

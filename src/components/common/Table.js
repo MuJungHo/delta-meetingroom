@@ -244,6 +244,8 @@ export default ({
   order = "asc",
   title = "",
   total = 0,
+  page = 0,
+  rowsPerPage = 10,
   toolbarFilters = <></>,
   onPageChange = () => { },
   onSortChange = () => { },
@@ -255,8 +257,8 @@ export default ({
 }) => {
   const classes = useStyles();
   const [selected, setSelected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  // const [page, setPage] = React.useState(0);
+  // const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
   const { theme } = useContext(GlobalContext);
   // console.log(theme)
@@ -297,16 +299,11 @@ export default ({
 
   const isSelected = (_id) => selected.indexOf(_id) !== -1;
 
-  // const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
-
   const handleChangePage = (event, newPage) => {
-    setPage(newPage)
-    onPageChange(newPage + 1)
+    onPageChange(newPage)
   }
 
   const handleChangeRowPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
     onRowsPerPageChange(parseInt(event.target.value, 10))
   }
 

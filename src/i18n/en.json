@@ -104,6 +104,7 @@
     "_require": "Required",
     "_transaction-list": "Transaction",
     "_transfer": "Transfered",
+    "_user": "User",
     "400001": "Command execution timeout",
     "400002": "QueryString cannot be empty",
     "400003": "Limit cannot be empty.",

@@ -8,12 +8,16 @@ const host = process.env.NODE_ENV === 'production' ? "" : `http://${process.env.
 export const instance = axios.create({
   baseURL: `${host}/api`,
   timeout: 30000,
-  headers: {
-    "Authorization": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNzMzMzc5ODA3LCJleHAiOjE3MzMzODM0MDd9.DOn0Eq90dvY04PGUrZ3ZFaq_zPT9Zqa7X_2yO9SNxUM"
-  }
+  // headers: {
+  //   "Authorization": localStorage.getItem("token") || undefined
+  // }
 });
 
-export const api = () => {
+const token = localStorage.getItem("token");
+
+if (token) instance.defaults.headers.common['Authorization'] = token;
+
+const _api = () => {
   const promise_ = (instance_) => {
     return new Promise((response, reject) => {
       instance_
@@ -26,9 +30,12 @@ export const api = () => {
     })
   }
   return {
-    getUserList: () => promise_(instance.get('/user/findAll')),
+    postAuthLogin: ({ data }) => promise_(instance.post('/auth/login', { ...data })),
+    getUserList: ({ ...rest }) => promise_(instance.get('/user/findAll', { params: { ...rest } })),
     postUser: ({ data }) => promise_(instance.post('/user/create', { ...data })),
     putUser: ({ data, ...rest }) => promise_(instance.put('/user/update', { ...data }, { params: { ...rest } })),
     deleteUser: ({ ...rest }) => promise_(instance.delete('/user/delete', { params: { ...rest } })),
   }
 }
+
+export const api = _api()

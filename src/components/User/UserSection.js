@@ -18,59 +18,17 @@ import {
   DialogActions,
 } from "../common";
 
-import {
-  FormControl, InputLabel,
-  Select,
-  MenuItem
-} from '@material-ui/core';
-
-// const useStyles = makeStyles((theme) => ({
-//   root: {
-//     width: '100%',
-//     padding: theme.spacing(3),
-//     position: 'relative'
-//   },
-//   paper: {
-//     width: '100%',
-//     marginTop: theme.spacing(2),
-//     marginBottom: theme.spacing(2),
-//   },
-//   actions: {
-//     position: 'absolute',
-//     left: 20,
-//     bottom: 20,
-//     '& svg': {
-//       color: theme.palette.layout.color,
-//     }
-//   },
-//   content: {
-//     width: 700,
-//     backgroundColor: theme.palette.dialog.background,
-//     color: theme.palette.dialog.color,
-//   },
-//   info: {
-//     display: 'flex',
-//     width: '100%',
-//     alignItems: 'center',
-//     height: 45,
-//     '& > *:first-child': {
-//       flexBasis: '25%'
-//     },
-//     '& > *:not(:first-child)': {
-//       flexBasis: '74%'
-//     },
-//   },
-// }));
-
 const UserSection = ({
   user = {
     email: "",
     name: "",
+    account: "",
+    password: ""
   },
   onConfirm = () => { },
 }) => {
   const [state, setState] = React.useState(user);
-  const { closeDialog, t, authedApi } = useContext(GlobalContext);
+  const { closeDialog, t } = useContext(GlobalContext);
   
 
   return (
@@ -88,6 +46,24 @@ const UserSection = ({
           style={{ marginBottom: 20 }}
           value={state.name}
           onChange={e => setState({ ...state, name: e.target.value })}
+        />
+        <TextField
+          label={t("account")}
+          required
+          type="text"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.account}
+          onChange={e => setState({ ...state, account: e.target.value })}
+        />
+        <TextField
+          label={t("password")}
+          required
+          type="password"
+          fullWidth
+          style={{ marginBottom: 20 }}
+          value={state.password}
+          onChange={e => setState({ ...state, password: e.target.value })}
         />
         <TextField
           label={t("email")}

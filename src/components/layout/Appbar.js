@@ -92,7 +92,7 @@ const useStyles = makeStyles((theme) => {
 const Appbar = ({ open }) => {
   const classes = useStyles();
   const { logout, account } = useContext(AuthContext);
-  const { locale, changeLocale, t, changeTheme, theme, authedApi } = useContext(GlobalContext);
+  const { locale, changeLocale, t, changeTheme, theme } = useContext(GlobalContext);
   const [anchor, setAnchor] = React.useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
@@ -115,7 +115,6 @@ const Appbar = ({ open }) => {
   // }
 
   const handleLogout = async () => {
-    await authedApi.tokenLogout()
     logout()
   }
 

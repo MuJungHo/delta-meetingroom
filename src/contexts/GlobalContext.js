@@ -21,7 +21,7 @@ import Close from '@material-ui/icons/Close';
 import { lighten_palette, dark_palette } from "../customTheme";
 
 import i18n from '../i18n';
-import { api } from '../utils/apis';
+// import { api } from '../utils/apis';
 import WarningSection from '../components/WarningSection';
 
 import "../style/normalize.css";
@@ -124,8 +124,7 @@ function GlobalProvider({ children, ...rest }) {
     openWarningDialog,
     closeDialog,
     openSnackbar,
-    theme,
-    authedApi: api(token, logout, openCatchErrorSnackbar)
+    theme
   };
 
   return <GlobalContext.Provider
