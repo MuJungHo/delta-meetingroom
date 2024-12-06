@@ -31,9 +31,10 @@ const _api = () => {
   }
   return {
     postAuthLogin: ({ data }) => promise_(instance.post('/auth/login', { ...data })),
-    getUserList: ({ ...rest }) => promise_(instance.get('/user/findAll', { params: { ...rest } })),
-    postUser: ({ data }) => promise_(instance.post('/user/create', { ...data })),
-    putUser: ({ data, ...rest }) => promise_(instance.put('/user/update', { ...data }, { params: { ...rest } })),
+    
+    getUserList: ({ ...rest }) => promise_(instance.get('/user/list', { params: { ...rest } })),
+    postCreateUser: ({ data }) => promise_(instance.post('/user/create', { ...data })),
+    putUpdateUser: ({ data, ...rest }) => promise_(instance.put('/user/update', { ...data }, { params: { ...rest } })),
     deleteUser: ({ ...rest }) => promise_(instance.delete('/user/delete', { params: { ...rest } })),
   }
 }

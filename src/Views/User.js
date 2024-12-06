@@ -67,7 +67,7 @@ const User = () => {
   }
 
   const handleEditUserAccount = async (user) => {
-    await api.putUser({ data: { ...user }, id: user.id })
+    await api.putUpdateUser({ data: { ...user }, id: user.id })
     getUserList()
     closeDialog()
     openSnackbar({
@@ -77,7 +77,7 @@ const User = () => {
   }
 
   const handleAddUserAccount = async (user) => {
-    await api.postUser({ data: { ...user } })
+    await api.postCreateUser({ data: { ...user } })
     getUserList()
     closeDialog()
     openSnackbar({
