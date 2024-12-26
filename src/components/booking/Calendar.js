@@ -21,22 +21,10 @@ const useStyles = makeStyles({
 })
 
 export default ({
-  year,
-  month
+  dates = [],
+  bookings = []
 }) => {
   const classes = useStyles();
-  const currMonthFirstDay = new Date(year, month, 1).getDay();
-  const currMonthDays = new Date(year, (month + 1), 0).getDate();
-  const lastMonthDays = new Date(year, month, 0).getDate();
-  const dates = [...Array(35).keys()].map(index => {
-    if (index < currMonthFirstDay) {
-      return `${year}/${month === 0 ? 12 : month}/${lastMonthDays - currMonthFirstDay + index + 1}`
-    } else if (index > (currMonthDays + currMonthFirstDay - 1)) {
-      return `${year}/${(month + 2) === 13 ? 1 : (month + 2)}/${index - currMonthDays - currMonthFirstDay + 1}`
-    } else {
-      return `${year}/${(month + 1)}/${index - currMonthFirstDay + 1}`
-    }
-  })
   return (
     <div className={classes.container}>
       {
@@ -46,6 +34,7 @@ export default ({
               index={index}
               key={date}
               date={date}
+              bookings={bookings}
             />)
       }
     </div>

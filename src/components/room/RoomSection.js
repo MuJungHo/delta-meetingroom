@@ -19,15 +19,12 @@ import {
 } from "../common";
 
 const UserSection = ({
-  user = {
-    email: "",
+  room = {
     name: "",
-    account: "",
-    password: ""
   },
   onConfirm = () => { },
 }) => {
-  const [state, setState] = React.useState(user);
+  const [state, setState] = React.useState(room);
   const { closeDialog, t } = useContext(GlobalContext);
   
 
@@ -39,38 +36,12 @@ const UserSection = ({
           width: 500
         }}>
         <TextField
-          label={t("account")}
-          required
-          type="text"
-          fullWidth
-          style={{ marginBottom: 20 }}
-          value={state.account}
-          onChange={e => setState({ ...state, account: e.target.value })}
-        />
-        <TextField
-          label={t("password")}
-          required
-          type="password"
-          fullWidth
-          style={{ marginBottom: 20 }}
-          value={state.password}
-          onChange={e => setState({ ...state, password: e.target.value })}
-        />
-        <TextField
           label={t("name")}
           type="text"
           fullWidth
           style={{ marginBottom: 20 }}
           value={state.name}
           onChange={e => setState({ ...state, name: e.target.value })}
-        />
-        <TextField
-          label={t("email")}
-          type="text"
-          fullWidth
-          style={{ marginBottom: 20 }}
-          value={state.email}
-          onChange={e => setState({ ...state, email: e.target.value })}
         />
       </DialogContent>
       <DialogActions>

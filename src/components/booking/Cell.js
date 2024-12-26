@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import moment from "moment";
 import Schedule from "./Schedule";
-import { GlobalContext } from "../../contexts/GlobalContext"
+import { GlobalContext } from "../../contexts/GlobalContext";
 
 const useStyles = makeStyles((theme) => ({
   cell: {
@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 3
   }
 }))
-
-export default ({ date, index }) => {
+// frequency 0=once, 1=daily, 2=week, 3=monthly
+export default ({ date, index, bookings }) => {
   const classes = useStyles();
   const isToday = moment(date).isSame(new Date(), 'day');
   const { openDialog } = useContext(GlobalContext);
@@ -63,7 +63,15 @@ export default ({ date, index }) => {
       {
         isToday
           ? <Avatar className={classes.avatar}>{moment(date).format("D")}</Avatar>
-          : <p style={{ color: 'rgb(60,64,67)', marginTop: 8 }}>{moment(date).format("D")}</p>
+          : <p style={{ color: 'rgb(60,64,67)', marginTop: 8 }}>{moment(date).format('D')}</p>
+      }
+      {
+        bookings
+          .filter(booking => booking.frequency === 0 && moment(date).isSame(booking.startTime, 'date')
+            || (booking.frequency === 1 && moment(date).isSameOrAfter(booking.startTime, 'date'))
+            || (booking.frequency === 2 && moment(date).isSameOrAfter(booking.startTime, 'date') && (moment(date).weekday() === moment(booking.startTime).weekday()))
+            || (booking.frequency === 3 && moment(date).isSameOrAfter(booking.startTime, 'date') && (moment(date).format("D") === moment(booking.startTime).format("D"))))
+          .map(booking => <p key={booking.id}>{booking.name}{moment(booking.startTime).format('HH:mm')}</p>)
       }
     </div>
   )
