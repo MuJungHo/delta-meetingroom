@@ -4,9 +4,11 @@ import { ArrowBackIos, ArrowForwardIos, Today } from '@material-ui/icons';
 import { Button } from "../components/common";
 import { api } from "../utils/apis";
 import moment from "moment";
+import { GlobalContext } from "../contexts/GlobalContext";
 
 export default () => {
   const dt = new Date();
+  const { closeDialog } = useContext(GlobalContext);
   const [year, setYear] = React.useState(dt.getFullYear());
   const [month, setMonth] = React.useState(dt.getMonth());
   const [bookings, setBookings] = React.useState([]);
@@ -17,12 +19,11 @@ export default () => {
   const dates = [...Array(35).keys()].map(index => {
     if (index < currMonthFirstDay) {
       // console.log(month)
-      return `${month === 0 ? year - 1 : year}/${month === 0 ? 12 : month}/${lastMonthDays - currMonthFirstDay + index + 1}`
+      return `${month === 0 ? year - 1 : year}-${month === 0 ? 12 : month}-${lastMonthDays - currMonthFirstDay + index + 1}`
     } else if (index > (currMonthDays + currMonthFirstDay - 1)) {
-      return `${(month + 2) === 13 ? year + 1 : year}/${(month + 2) === 13 ? 1 : (month + 2)}/${index - currMonthDays - currMonthFirstDay + 1}`
+      return `${(month + 2) === 13 ? year + 1 : year}-${(month + 2) === 13 ? 1 : (month + 2)}-${index - currMonthDays - currMonthFirstDay + 1}`
     } else {
-      console.log(2)
-      return `${year}/${(month + 1)}/${index - currMonthFirstDay + 1}`
+      return `${year}-${(month + 1)}-${index - currMonthFirstDay + 1}`
     }
   })
 
@@ -61,6 +62,23 @@ export default () => {
     setYear(dt.getFullYear())
     setMonth(dt.getMonth())
   }
+
+
+  const handleUpdateBooking = async (booking) => {
+    // return console.log(booking)
+    await api.putUpdateBooking({ data: { ...booking }, id: booking.id })
+    closeDialog()
+    getBookingList()
+    // console.log(booking)
+  }
+  const handleCreateBooking = async (booking) => {
+    // return console.log(booking)
+    await api.postCreateBooking({ data: { ...booking } })
+    closeDialog()
+    getBookingList()
+    // console.log(booking)
+  }
+
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -69,7 +87,12 @@ export default () => {
         <Button onClick={handleHigherMonth}><ArrowForwardIos /></Button>
         <h5>{`${year}/${month + 1}`}</h5>
       </div>
-      <Calendar dates={dates} bookings={bookings} />
+      <Calendar
+        dates={dates}
+        bookings={bookings}
+        handleUpdateBooking={handleUpdateBooking}
+        handleCreateBooking={handleCreateBooking}
+      />
     </>
   )
 }

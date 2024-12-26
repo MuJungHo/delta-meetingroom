@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
+import { Chip } from "@material-ui/core";
 import moment from "moment";
-import Schedule from "./Schedule";
+import Event from "./Event";
 import { GlobalContext } from "../../contexts/GlobalContext";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +29,11 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 // frequency 0=once, 1=daily, 2=week, 3=monthly
-export default ({ date, index, bookings }) => {
+export default ({
+  date, index, bookings,
+  handleCreateBooking,
+  handleUpdateBooking
+}) => {
   const classes = useStyles();
   const isToday = moment(date).isSame(new Date(), 'day');
   const { openDialog } = useContext(GlobalContext);
@@ -47,12 +52,17 @@ export default ({ date, index, bookings }) => {
     openDialog({
       title: date,
       maxWidth: "lg",
-      section: <Schedule date={date} onConfirm={handleSaveSchedule} />
+      section: <Event date={date} onConfirm={handleCreateBooking} />
     })
   }
 
-  const handleSaveSchedule = () => {
-
+  const handleOpenEventDialog = (e, booking) => {
+    e.stopPropagation()
+    openDialog({
+      title: booking.name,
+      maxWidth: "lg",
+      section: <Event bookingId={booking.id} onConfirm={handleUpdateBooking} />
+    })
   }
 
   return (
@@ -71,7 +81,9 @@ export default ({ date, index, bookings }) => {
             || (booking.frequency === 1 && moment(date).isSameOrAfter(booking.startTime, 'date'))
             || (booking.frequency === 2 && moment(date).isSameOrAfter(booking.startTime, 'date') && (moment(date).weekday() === moment(booking.startTime).weekday()))
             || (booking.frequency === 3 && moment(date).isSameOrAfter(booking.startTime, 'date') && (moment(date).format("D") === moment(booking.startTime).format("D"))))
-          .map(booking => <p key={booking.id}>{booking.name}{moment(booking.startTime).format('HH:mm')}</p>)
+          .map(booking => <Chip
+            // color="secondary"
+            onClick={(e) => handleOpenEventDialog(e, booking)} style={{ width: 'calc(100% - 20px)', margin: '2px 0' }} size="small" key={booking.id} label={booking.name} />)
       }
     </div>
   )

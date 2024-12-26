@@ -22,7 +22,9 @@ const useStyles = makeStyles({
 
 export default ({
   dates = [],
-  bookings = []
+  bookings = [],
+  handleCreateBooking = () => { },
+  handleUpdateBooking = () => { }
 }) => {
   const classes = useStyles();
   return (
@@ -35,6 +37,8 @@ export default ({
               key={date}
               date={date}
               bookings={bookings}
+              handleCreateBooking={handleCreateBooking}
+              handleUpdateBooking={handleUpdateBooking}
             />)
       }
     </div>
