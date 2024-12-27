@@ -50,7 +50,7 @@ export default ({
 
   const handleOpenDialog = () => {
     openDialog({
-      title: date,
+      title: "新增預約",
       maxWidth: "lg",
       section: <Event date={date} onConfirm={handleCreateBooking} />
     })
@@ -59,7 +59,7 @@ export default ({
   const handleOpenEventDialog = (e, booking) => {
     e.stopPropagation()
     openDialog({
-      title: booking.name,
+      title: "編輯預約",
       maxWidth: "lg",
       section: <Event bookingId={booking.id} onConfirm={handleUpdateBooking} />
     })
@@ -77,10 +77,11 @@ export default ({
       }
       {
         bookings
-          .filter(booking => booking.frequency === 0 && moment(date).isSame(booking.startTime, 'date')
-            || (booking.frequency === 1 && moment(date).isSameOrAfter(booking.startTime, 'date'))
-            || (booking.frequency === 2 && moment(date).isSameOrAfter(booking.startTime, 'date') && (moment(date).weekday() === moment(booking.startTime).weekday()))
-            || (booking.frequency === 3 && moment(date).isSameOrAfter(booking.startTime, 'date') && (moment(date).format("D") === moment(booking.startTime).format("D"))))
+          .filter(booking => booking.frequency === 0 && moment(date).isSame(booking.startDate, 'date')
+            || (booking.frequency === 1 && moment(date).isSameOrAfter(booking.startDate, 'date'))
+            || (booking.frequency === 2 && moment(date).isSameOrAfter(booking.startDate, 'date') && (moment(date).weekday() === moment(booking.startDate).weekday()))
+            || (booking.frequency === 3 && moment(date).isSameOrAfter(booking.startDate, 'date') && (moment(date).format("D") === moment(booking.startDate).format("D"))))
+          .filter(booking => booking.endDate === null || moment(date).isSameOrBefore(booking.endDate, 'date'))
           .map(booking => <Chip
             // color="secondary"
             onClick={(e) => handleOpenEventDialog(e, booking)} style={{ width: 'calc(100% - 20px)', margin: '2px 0' }} size="small" key={booking.id} label={booking.name} />)

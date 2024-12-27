@@ -12,25 +12,28 @@ export default () => {
   const [year, setYear] = React.useState(dt.getFullYear());
   const [month, setMonth] = React.useState(dt.getMonth());
   const [bookings, setBookings] = React.useState([]);
+  // const currMonth = new Date(year, month).getMonth();
   const currMonthFirstDay = new Date(year, month, 1).getDay();
   const currMonthDays = new Date(year, (month + 1), 0).getDate();
   const lastMonthDays = new Date(year, month, 0).getDate();
 
   const dates = [...Array(35).keys()].map(index => {
+    let date = ""
     if (index < currMonthFirstDay) {
       // console.log(month)
-      return `${month === 0 ? year - 1 : year}-${month === 0 ? 12 : month}-${lastMonthDays - currMonthFirstDay + index + 1}`
+      date = `${month === 0 ? year - 1 : year}-${month === 0 ? 12 : month}-${lastMonthDays - currMonthFirstDay + index + 1}`
     } else if (index > (currMonthDays + currMonthFirstDay - 1)) {
-      return `${(month + 2) === 13 ? year + 1 : year}-${(month + 2) === 13 ? 1 : (month + 2)}-${index - currMonthDays - currMonthFirstDay + 1}`
+      date = `${(month + 2) === 13 ? year + 1 : year}-${(month + 2) === 13 ? 1 : (month + 2)}-${index - currMonthDays - currMonthFirstDay + 1}`
     } else {
-      return `${year}-${(month + 1)}-${index - currMonthFirstDay + 1}`
+      date = `${year}-${(month + 1)}-${index - currMonthFirstDay + 1}`
     }
+    return moment(date).format("YYYY-MM-DD")
   })
 
   const getBookingList = useCallback(async () => {
     let { rows } = await api.getBookingList({
-      startTime: moment(dates[0]).unix(),
-      endTime: moment(dates[34]).unix(),
+      start: moment(dates[0]).unix(),
+      end: moment(dates[34]).unix(),
       userId: 1
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
