@@ -14,7 +14,6 @@ import {
   Card
 } from '@material-ui/core';
 import { ReactComponent as Logo } from '../images/delta.svg';
-import { api } from "../utils/apis";
 
 const useStyles = makeStyles(() => ({
   container: {
@@ -69,7 +68,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   const { login, token, setKeep, keep, } = useContext(AuthContext);
-  const { t, changeLocale, locale } = useContext(GlobalContext);
+  const { t, changeLocale, locale, authedApi } = useContext(GlobalContext);
 
   if (token) {
     return <Redirect to="/" />
@@ -82,10 +81,9 @@ const Login = () => {
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const { token } = await api.postAuthLogin({ data: { account, password } });
+    const { token } = await authedApi.postAuthLogin({ data: { account, password } });
 
     login(token);
-    // let _account = await api().getUserList()
   }
 
   return (

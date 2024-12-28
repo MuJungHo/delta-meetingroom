@@ -23,7 +23,7 @@ import { lighten_palette, dark_palette } from "../customTheme";
 import i18n from '../i18n';
 // import { api } from '../utils/apis';
 import WarningSection from '../components/WarningSection';
-
+import { api } from "../utils/apis";
 import "../style/normalize.css";
 import 'rsuite/dist/rsuite.min.css';
 
@@ -124,7 +124,8 @@ function GlobalProvider({ children, ...rest }) {
     openWarningDialog,
     closeDialog,
     openSnackbar,
-    theme
+    theme,
+    authedApi: api(logout)
   };
 
   return <GlobalContext.Provider

@@ -18,7 +18,6 @@ import {
 // } from '@material-ui/core';
 
 import RoomSection from "../components/room/RoomSection";
-import { api } from "../utils/apis";
 
 const initFilter = {
   order: "asc",
@@ -29,14 +28,14 @@ const initFilter = {
 }
 
 const User = () => {
-  const { t, openDialog, closeDialog, openSnackbar, openWarningDialog } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
   const [roomList, setRoomList] = React.useState([]);
 
   const getRoomList = useCallback(async () => {
-    let { rows, count } = await api.getRoomList({
+    let { rows, count } = await authedApi.getRoomList({
       limit: filter.limit,
       page: filter.page,
       keyword: filter.keyword,
@@ -67,7 +66,7 @@ const User = () => {
   }
 
   const handleEditRoom = async (room) => {
-    await api.putUpdateRoom({ data: { ...room }, id: room.id })
+    await authedApi.putUpdateRoom({ data: { ...room }, id: room.id })
     getRoomList()
     closeDialog()
     openSnackbar({
@@ -77,7 +76,7 @@ const User = () => {
   }
 
   const handleAddRoom = async (room) => {
-    await api.postCreateRoom({ data: { ...room } })
+    await authedApi.postCreateRoom({ data: { ...room } })
     getRoomList()
     closeDialog()
     openSnackbar({
@@ -87,7 +86,7 @@ const User = () => {
   }
 
   const handleDeleteRoom = async room => {
-    await api.deleteRoom({ id: room.id })
+    await authedApi.deleteRoom({ id: room.id })
     getRoomList()
     closeDialog()
     openSnackbar({

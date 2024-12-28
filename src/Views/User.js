@@ -18,7 +18,6 @@ import {
 // } from '@material-ui/core';
 
 import UserSection from "../components/User/UserSection";
-import { api } from "../utils/apis";
 
 const initFilter = {
   order: "asc",
@@ -29,14 +28,14 @@ const initFilter = {
 }
 
 const User = () => {
-  const { t, openDialog, closeDialog, openSnackbar, openWarningDialog } = useContext(GlobalContext);
+  const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
 
   const [accountList, setAccountList] = React.useState([]);
 
   const getUserList = useCallback(async () => {
-    let { rows, count } = await api.getUserList({
+    let { rows, count } = await authedApi.getUserList({
       limit: filter.limit,
       page: filter.page,
       keyword: filter.keyword,
@@ -67,7 +66,7 @@ const User = () => {
   }
 
   const handleEditUserAccount = async (user) => {
-    await api.putUpdateUser({ data: { ...user }, id: user.id })
+    await authedApi.putUpdateUser({ data: { ...user }, id: user.id })
     getUserList()
     closeDialog()
     openSnackbar({
@@ -77,7 +76,7 @@ const User = () => {
   }
 
   const handleAddUserAccount = async (user) => {
-    await api.postCreateUser({ data: { ...user } })
+    await authedApi.postCreateUser({ data: { ...user } })
     getUserList()
     closeDialog()
     openSnackbar({
@@ -87,7 +86,7 @@ const User = () => {
   }
 
   const handleDeleteAccount = async user => {
-    await api.deleteUser({ id: user.id })
+    await authedApi.deleteUser({ id: user.id })
     getUserList()
     closeDialog()
     openSnackbar({

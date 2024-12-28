@@ -7,7 +7,7 @@ const host = process.env.NODE_ENV === 'production' ? "" : `http://${process.env.
 
 export const instance = axios.create({
   baseURL: `${host}/api`,
-  timeout: 30000,
+  timeout: 3000,
   // headers: {
   //   "Authorization": localStorage.getItem("token") || undefined
   // }
@@ -17,7 +17,7 @@ const token = localStorage.getItem("token");
 
 if (token) instance.defaults.headers.common['Authorization'] = token;
 
-const _api = () => {
+export const api = (logout = () => { }) => {
   const promise_ = (instance_) => {
     return new Promise((response, reject) => {
       instance_
@@ -25,13 +25,14 @@ const _api = () => {
           response(res.data);
         })
         .catch((error) => {
+          if (error.response.status === 401) logout()
           reject(error);
         })
     })
   }
   return {
     postAuthLogin: ({ data }) => promise_(instance.post('/auth/login', { ...data })),
-    
+
     getUserList: ({ ...rest }) => promise_(instance.get('/user/list', { params: { ...rest } })),
     postCreateUser: ({ data }) => promise_(instance.post('/user/create', { ...data })),
     putUpdateUser: ({ data, ...rest }) => promise_(instance.put('/user/update', { ...data }, { params: { ...rest } })),
@@ -43,6 +44,7 @@ const _api = () => {
     deleteRoom: ({ ...rest }) => promise_(instance.delete('/room/delete', { params: { ...rest } })),
 
     getBookingList: ({ ...rest }) => promise_(instance.get('/booking/list', { params: { ...rest } })),
+    getAvailabelRoomList: ({ ...rest }) => promise_(instance.get('/booking/available', { params: { ...rest } })),
     getBooking: ({ ...rest }) => promise_(instance.get('/booking', { params: { ...rest } })),
     postCreateBooking: ({ data }) => promise_(instance.post('/booking/create', { ...data })),
     putUpdateBooking: ({ data, ...rest }) => promise_(instance.put('/booking/update', { ...data }, { params: { ...rest } })),
@@ -50,4 +52,3 @@ const _api = () => {
   }
 }
 
-export const api = _api()

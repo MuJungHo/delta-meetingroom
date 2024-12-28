@@ -18,7 +18,7 @@ import {
   MenuItem
 } from '@material-ui/core';
 
-import { api } from "../../utils/apis";
+
 import moment from "moment";
 
 const useStyles = makeStyles({
@@ -38,19 +38,30 @@ const useStyles = makeStyles({
     },
   },
 })
+
+const getCurrentTimeIndex = () => {
+  let currTime = []
+  for (let i = 0; i < 23; i++) {
+    if (moment().isBetween(moment().startOf('day').add(i, 'hours'), moment().startOf('day').add(i + 1, 'hours'))) {
+      currTime = [i, i + 1]
+    }
+  }
+  return currTime
+}
+
 export default ({
   onConfirm = () => { },
   date = null,
   bookingId = null
 }) => {
   const classes = useStyles();
-  const { closeDialog, t } = useContext(GlobalContext);
-  // console.log(date)
+  const { closeDialog, t, authedApi } = useContext(GlobalContext);
+
   const [state, setState] = React.useState({
     date,
     frequency: 0,
-    startTime: 0,
-    endTime: 1,
+    startTime: getCurrentTimeIndex()[0],
+    endTime: getCurrentTimeIndex()[1],
     startDate: date,
     endDate: null,
     userId: "",
@@ -74,21 +85,21 @@ export default ({
 
 
   const getUserList = async () => {
-    let { rows } = await api.getUserList({})
+    let { rows } = await authedApi.getUserList({})
 
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setUsers(_rows)
   }
 
   const getRoomList = async () => {
-    let { rows } = await api.getRoomList({})
+    let { rows } = await authedApi.getRoomList({})
 
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setRooms(_rows)
   }
 
   const getBookingByBookingId = async () => {
-    let booking = await api.getBooking({ id: bookingId });
+    let booking = await authedApi.getBooking({ id: bookingId });
     setState({
       ...booking,
     })
@@ -112,7 +123,7 @@ export default ({
             })}
           />
         </div>
-        <div className={classes.info}>
+        {/* <div className={classes.info}>
           <Text>預約者</Text>
           <Select
             value={state.userId}
@@ -123,7 +134,7 @@ export default ({
               users.map(user => <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>)
             }
           </Select>
-        </div>
+        </div> */}
         <div className={classes.info}>
           <Text>{t("room")}</Text>
           <Select
@@ -158,7 +169,9 @@ export default ({
               onChange={e => setState({ ...state, startTime: e.target.value })}
             >
               {
-                times.map(time => <MenuItem key={time.value} value={time.value}>{time.name}</MenuItem>)
+                times
+                  .filter(time => time.value < state.endTime)
+                  .map(time => <MenuItem key={time.value} value={time.value}>{time.name}</MenuItem>)
               }
             </Select>
             <Select
@@ -167,7 +180,9 @@ export default ({
               onChange={e => setState({ ...state, endTime: e.target.value })}
             >
               {
-                times.map(time => <MenuItem key={time.value} value={time.value}>{time.name}</MenuItem>)
+                times
+                  .filter(time => time.value > state.startTime)
+                  .map(time => <MenuItem key={time.value} value={time.value}>{time.name}</MenuItem>)
               }
             </Select>
           </div>

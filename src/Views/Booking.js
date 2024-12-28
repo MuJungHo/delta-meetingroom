@@ -2,13 +2,12 @@ import React, { useContext, useCallback } from "react";
 import Calendar from "../components/booking/Calendar";
 import { ArrowBackIos, ArrowForwardIos, Today } from '@material-ui/icons';
 import { Button } from "../components/common";
-import { api } from "../utils/apis";
 import moment from "moment";
 import { GlobalContext } from "../contexts/GlobalContext";
 
 export default () => {
   const dt = new Date();
-  const { closeDialog } = useContext(GlobalContext);
+  const { closeDialog, authedApi } = useContext(GlobalContext);
   const [year, setYear] = React.useState(dt.getFullYear());
   const [month, setMonth] = React.useState(dt.getMonth());
   const [bookings, setBookings] = React.useState([]);
@@ -31,10 +30,9 @@ export default () => {
   })
 
   const getBookingList = useCallback(async () => {
-    let { rows } = await api.getBookingList({
+    let { rows } = await authedApi.getBookingList({
       start: moment(dates[0]).unix(),
-      end: moment(dates[34]).unix(),
-      userId: 1
+      end: moment(dates[34]).unix()
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setBookings(_rows)
@@ -69,14 +67,14 @@ export default () => {
 
   const handleUpdateBooking = async (booking) => {
     // return console.log(booking)
-    await api.putUpdateBooking({ data: { ...booking }, id: booking.id })
+    await authedApi.putUpdateBooking({ data: { ...booking }, id: booking.id })
     closeDialog()
     getBookingList()
     // console.log(booking)
   }
   const handleCreateBooking = async (booking) => {
     // return console.log(booking)
-    await api.postCreateBooking({ data: { ...booking } })
+    await authedApi.postCreateBooking({ data: { ...booking } })
     closeDialog()
     getBookingList()
     // console.log(booking)

@@ -159,16 +159,20 @@ const OpenMultiLevel = ({ route }) => {
       </ListItem>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
-          {children
-            .filter(child => child.roles.includes(role))
-            .map((child, key) => (
-              <NavLink key={key} to={child.path}>
-                <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={child.path}
-                  className={clsx(classes.node, {
-                    [classes.nodeActive]: location.pathname === child.path,
-                  })} >
-                  <FiberManualRecord style={{ width: 10, marginRight: 10 }} />{t(child.name)}</MenuItem></NavLink>
-            ))}
+          {
+            children
+              // .filter(child => child.roles.includes(role))
+              .map((child, key) => {
+                // console.log(child)
+                return (
+                  <NavLink key={key} to={child}>
+                    <MenuItem style={{ padding: '8px 16px 8px 48px' }} route={child}
+                      className={clsx(classes.node, {
+                        [classes.nodeActive]: location.pathname === child,
+                      })} >
+                      <FiberManualRecord style={{ width: 10, marginRight: 10 }} />{t(child)}</MenuItem></NavLink>
+                )
+              })}
         </List>
       </Collapse>
     </React.Fragment >
