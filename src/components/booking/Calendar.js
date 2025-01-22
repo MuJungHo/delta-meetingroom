@@ -13,7 +13,7 @@ const useStyles = makeStyles({
     flexWrap: 'wrap',
     width: '100%',
     flex: '1 1 auto',
-    height: 'calc(100% - 33px)'
+    height: 'calc(100% - 33px)',
   },
   spacer: {
     flex: 1
@@ -24,7 +24,8 @@ export default ({
   dates = [],
   bookings = [],
   handleCreateBooking = () => { },
-  handleUpdateBooking = () => { }
+  handleUpdateBooking = () => { },
+  handleDeleteBooking = () => { }
 }) => {
   const classes = useStyles();
   return (
@@ -39,6 +40,7 @@ export default ({
               bookings={bookings}
               handleCreateBooking={handleCreateBooking}
               handleUpdateBooking={handleUpdateBooking}
+              handleDeleteBooking={handleDeleteBooking}
             />)
       }
     </div>

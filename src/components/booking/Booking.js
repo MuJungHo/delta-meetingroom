@@ -59,7 +59,7 @@ export default ({
 
   const [state, setState] = React.useState({
     date,
-    frequency: 0,
+    frequency: "once",
     startTime: getCurrentTimeIndex()[0],
     endTime: getCurrentTimeIndex()[1],
     startDate: date,
@@ -68,7 +68,6 @@ export default ({
     roomId: "",
     name: ""
   });
-
   const [users, setUsers] = React.useState([]);
   const [rooms, setRooms] = React.useState([]);
 
@@ -76,32 +75,39 @@ export default ({
     name: moment().startOf('day').add(index, 'hours').format("HH:mm"),
     value: index
   }))
+  // console.log(times)
 
   React.useEffect(() => {
-    getUserList();
+    // getUserList();
     getRoomList();
     if (bookingId) getBookingByBookingId()
   }, [bookingId])
 
 
-  const getUserList = async () => {
-    let { rows } = await authedApi.getUserList({})
+  // const getUserList = async () => {
+  //   let { rows } = await authedApi.getUserList({})
 
-    const _rows = rows.map(a => ({ ...a, _id: a.id }))
-    setUsers(_rows)
-  }
+  //   const _rows = rows.map(a => ({ ...a, _id: a.id }))
+  //   setUsers(_rows)
+  // }
 
   const getRoomList = async () => {
     let { rows } = await authedApi.getRoomList({})
 
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setRooms(_rows)
+    setState({ ...state, roomId: _rows[0].id })
   }
 
   const getBookingByBookingId = async () => {
     let booking = await authedApi.getBooking({ id: bookingId });
     setState({
       ...booking,
+      date,
+      // startDate: moment(booking.startTime).format("YYYY-MM-DD"),
+      // startTime: Number(moment(booking.startTime).format("HH")),
+      // endDate: moment(booking.endTime).format("YYYY-MM-DD"),
+      // endTime: Number(moment(booking.endTime).format("HH")),
     })
   }
 
@@ -116,29 +122,17 @@ export default ({
           <Text>{t("name")}</Text>
           <TextField
             type="text"
-            value={state.name}
+            value={state.name || ""}
             onChange={e => setState({
               ...state,
               name: e.target.value
             })}
           />
         </div>
-        {/* <div className={classes.info}>
-          <Text>預約者</Text>
-          <Select
-            value={state.userId}
-            displayEmpty
-            onChange={e => setState({ ...state, userId: e.target.value })}
-          >
-            {
-              users.map(user => <MenuItem key={user.id} value={user.id}>{user.name}</MenuItem>)
-            }
-          </Select>
-        </div> */}
         <div className={classes.info}>
           <Text>{t("room")}</Text>
           <Select
-            value={state.roomId}
+            value={state.roomId || ""}
             displayEmpty
             onChange={e => setState({ ...state, roomId: e.target.value })}
           >
@@ -156,7 +150,7 @@ export default ({
           }}>
             <TextField
               type="date"
-              value={state.startDate}
+              value={state.startDate || ""}
               style={{ flex: 1, marginRight: 20 }}
               onChange={e => setState({
                 ...state,
@@ -176,7 +170,7 @@ export default ({
             </Select>
             <Select
               style={{ flex: .5 }}
-              value={state.endTime}
+              value={state.endTime || ""}
               onChange={e => setState({ ...state, endTime: e.target.value })}
             >
               {
@@ -190,13 +184,13 @@ export default ({
         <div className={classes.info}>
           <Text>{t("frequency")}</Text>
           <Select
-            value={state.frequency}
+            value={state.frequency || "once"}
             onChange={e => setState({ ...state, frequency: e.target.value })}
           >
-            <MenuItem value={0}>Once</MenuItem>
-            <MenuItem value={1}>Daily</MenuItem>
-            <MenuItem value={2}>Weekly</MenuItem>
-            <MenuItem value={3}>Monthly</MenuItem>
+            <MenuItem value="once">Once</MenuItem>
+            <MenuItem value="daily">Daily</MenuItem>
+            <MenuItem value="weekly">Weekly</MenuItem>
+            <MenuItem value="monthly">Monthly</MenuItem>
           </Select>
         </div>
         <div className={classes.info}>

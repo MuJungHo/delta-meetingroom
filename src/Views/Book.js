@@ -31,8 +31,10 @@ export default () => {
 
   const getBookingList = useCallback(async () => {
     let { rows } = await authedApi.getBookingList({
-      start: moment(dates[0]).unix(),
-      end: moment(dates[34]).unix()
+      startDate: moment(dates[0]).unix(),
+      endDate: moment(dates[34]).unix(),
+      startTime: 0,
+      endTime: 23
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setBookings(_rows)
@@ -72,9 +74,27 @@ export default () => {
     getBookingList()
     // console.log(booking)
   }
+
+  const handleDeleteBooking = async (bookingId) => {
+    await authedApi.deleteBooking({ id: bookingId })
+    closeDialog()
+    getBookingList()
+  }
+
   const handleCreateBooking = async (booking) => {
     // return console.log(booking)
-    await authedApi.postCreateBooking({ data: { ...booking } })
+    const data = {
+      roomId: booking.roomId,
+      frequency: booking.frequency,
+      startDate: moment(booking.startDate).format("YYYY-MM-DD"),
+      endDate: booking.endDate ? moment(booking.endDate).format("YYYY-MM-DD") : null,
+      startTime: booking.startTime,
+      endTime: booking.endTime,
+      name: booking.name
+    };
+    await authedApi.postCreateBooking({
+      data
+    })
     closeDialog()
     getBookingList()
     // console.log(booking)
@@ -93,6 +113,7 @@ export default () => {
         bookings={bookings}
         handleUpdateBooking={handleUpdateBooking}
         handleCreateBooking={handleCreateBooking}
+        handleDeleteBooking={handleDeleteBooking}
       />
     </>
   )

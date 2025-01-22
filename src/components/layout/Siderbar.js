@@ -234,12 +234,12 @@ const Siderbar = ({ open, setOpen }) => {
           bottom: 20,
         }}>
         {open && <span style={{ color: "#fff" }}>v{version}</span>}
-        <Button
+        {/* <Button
           size="small"
           onClick={() => setOpen(!open)}
           style={{ margin: open ? '' : 'auto' }}>
           {open ? <ArrowBack /> : <ArrowForward />}
-        </Button>
+        </Button> */}
       </div>
     </Drawer>)
 }

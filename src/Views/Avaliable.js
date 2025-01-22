@@ -30,11 +30,13 @@ const User = () => {
   const [availabelRoomList, setAvailabelRoomList] = React.useState([]);
 
   const getAvailabelRoomList = useCallback(async () => {
-    let startAt = 0;
+    let startTime = 0;
+    let endTime = 1;
 
     for (let i = 0; i < 23; i++) {
       if (moment().isBetween(moment().startOf('day').add(i, 'hours'), moment().startOf('day').add(i + 1, 'hours'))) {
-        startAt = i
+        startTime = i;
+        endTime = i + 1;
       }
     }
 
@@ -44,7 +46,9 @@ const User = () => {
       keyword: filter.keyword,
       order: filter.order,
       sort: filter.sort,
-      startAt
+      date: moment().format("YYYY-MM-DD"),
+      startTime,
+      endTime
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setAvailabelRoomList(_rows)

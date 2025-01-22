@@ -1,6 +1,6 @@
 import User from '../Views/User';
 import Room from '../Views/Room';
-import Booking from '../Views/Booking';
+import Book from '../Views/Book';
 import Avaliable from '../Views/Avaliable';
 
 
@@ -26,23 +26,22 @@ const routes = [
     sider: true
   },
   {
-    path: "/_booking",
-    name: "_booking",
-    component: Booking,
+    path: "/book",
+    name: "_book",
+    component: Book,
     icon: CalendarMonth,
     sider: true,
-    children: ["/booking", "/avaliable"]
   },
-  {
-    path: "/avaliable",
-    name: "avaliable",
-    component: Avaliable,
-  },
-  {
-    path: "/booking",
-    name: "booking",
-    component: Booking,
-  },
+  // {
+  //   path: "/avaliable",
+  //   name: "avaliable",
+  //   component: Avaliable,
+  // },
+  // {
+  //   path: "/booking",
+  //   name: "booking",
+  //   component: Booking,
+  // },
 ]
 
 export default routes
