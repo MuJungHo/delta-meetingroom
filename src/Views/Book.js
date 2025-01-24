@@ -31,10 +31,9 @@ export default () => {
 
   const getBookingList = useCallback(async () => {
     let { rows } = await authedApi.getBookingList({
-      startDate: moment(dates[0]).unix(),
-      endDate: moment(dates[34]).unix(),
-      startTime: 0,
-      endTime: 23
+      startDateUnix: moment(dates[0]).unix(),
+      endDateUnix: moment(dates[34]).unix(),
+      startTime: 0
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setBookings(_rows)
@@ -89,7 +88,6 @@ export default () => {
       startDate: moment(booking.startDate).format("YYYY-MM-DD"),
       endDate: booking.endDate ? moment(booking.endDate).format("YYYY-MM-DD") : null,
       startTime: booking.startTime,
-      endTime: booking.endTime,
       name: booking.name
     };
     await authedApi.postCreateBooking({

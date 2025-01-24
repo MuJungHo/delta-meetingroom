@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 3
   }
 }))
-// frequency 0=once, 1=daily, 2=week, 3=monthly
+
 export default ({
   date, index, bookings,
   handleCreateBooking,
@@ -105,7 +105,7 @@ export default ({
         _bookings
           .slice(0, 3)
           .map(booking => <Tooltip
-            title={`${booking.startTime}:00 - ${booking.endTime}:00`}
+            title={`${booking.startTime}:00 - ${booking.startTime + 1}:00`}
             key={booking.id}>
             <Chip
               // color="secondary"

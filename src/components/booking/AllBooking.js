@@ -39,7 +39,6 @@ const useStyles = makeStyles({
 })
 
 export default ({
-  events = [],
   date = null
 }) => {
   const classes = useStyles();
@@ -49,10 +48,9 @@ export default ({
 
   const getBookingList = useCallback(async () => {
     let { rows } = await authedApi.getBookingList({
-      startDate: moment(date).unix(),
-      endDate: moment(date).unix(),
-      startTime: 0,
-      endTime: 23
+      startDateUnix: moment(date).unix(),
+      endDateUnix: moment(date).unix(),
+      startTime: 0
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setBookings(_rows)
@@ -73,7 +71,7 @@ export default ({
         {
           bookings
             .map(booking => <Tooltip
-              title={`${booking.startTime}:00 - ${booking.endTime}:00`}
+              title={`${booking.startTime}:00 - ${booking.startTime + 1}:00`}
               key={booking.id}>
               <Chip
                 // color="secondary"

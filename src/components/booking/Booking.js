@@ -8,14 +8,16 @@ import {
   TextField, Button, Checkbox,
   DialogContent,
   DialogActions,
-  Text
+  Text,
+  Radio
 } from "../common";
 
 import {
   FormControl, InputLabel,
   FormControlLabel,
   Select,
-  MenuItem
+  MenuItem,
+  RadioGroup
 } from '@material-ui/core';
 
 
@@ -61,21 +63,23 @@ export default ({
     date,
     frequency: "once",
     startTime: getCurrentTimeIndex()[0],
-    endTime: getCurrentTimeIndex()[1],
     startDate: date,
     endDate: null,
     userId: "",
     roomId: "",
     name: ""
   });
-  const [users, setUsers] = React.useState([]);
+
   const [rooms, setRooms] = React.useState([]);
 
-  const times = [...Array(24).keys()].map(index => ({
-    name: moment().startOf('day').add(index, 'hours').format("HH:mm"),
-    value: index
-  }))
-  // console.log(times)
+  const times = [...Array(24).keys()].map(index => {
+    const start = moment().startOf('day').add(index, 'hours').format("HH:mm");
+    const end = moment().startOf('day').add(index + 1, 'hours').format("HH:mm");
+    return {
+      name: `${start} - ${end}`,
+      value: index
+    }
+  })
 
   React.useEffect(() => {
     // getUserList();
@@ -106,8 +110,6 @@ export default ({
       date,
       // startDate: moment(booking.startTime).format("YYYY-MM-DD"),
       // startTime: Number(moment(booking.startTime).format("HH")),
-      // endDate: moment(booking.endTime).format("YYYY-MM-DD"),
-      // endTime: Number(moment(booking.endTime).format("HH")),
     })
   }
 
@@ -158,24 +160,12 @@ export default ({
               })}
             />
             <Select
-              style={{ flex: .5, marginRight: 20 }}
+              style={{ flex: .5 }}
               value={state.startTime}
               onChange={e => setState({ ...state, startTime: e.target.value })}
             >
               {
                 times
-                  .filter(time => time.value < state.endTime)
-                  .map(time => <MenuItem key={time.value} value={time.value}>{time.name}</MenuItem>)
-              }
-            </Select>
-            <Select
-              style={{ flex: .5 }}
-              value={state.endTime || ""}
-              onChange={e => setState({ ...state, endTime: e.target.value })}
-            >
-              {
-                times
-                  .filter(time => time.value > state.startTime)
                   .map(time => <MenuItem key={time.value} value={time.value}>{time.name}</MenuItem>)
               }
             </Select>
