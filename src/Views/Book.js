@@ -4,9 +4,11 @@ import { ArrowBackIos, ArrowForwardIos, Today } from '@material-ui/icons';
 import { Button } from "../components/common";
 import moment from "moment";
 import { GlobalContext } from "../contexts/GlobalContext";
-
+import { useParams } from "react-router-dom";
 export default () => {
   const dt = new Date();
+  const { roomId } = useParams();
+  
   const { closeDialog, authedApi } = useContext(GlobalContext);
   const [year, setYear] = React.useState(dt.getFullYear());
   const [month, setMonth] = React.useState(dt.getMonth());
@@ -30,10 +32,12 @@ export default () => {
   })
 
   const getBookingList = useCallback(async () => {
+    if (!roomId) return
     let { rows } = await authedApi.getBookingList({
       startDateUnix: moment(dates[0]).unix(),
       endDateUnix: moment(dates[34]).unix(),
-      startTime: 0
+      startTime: 0,
+      roomId
     })
     const _rows = rows.map(a => ({ ...a, _id: a.id }))
     setBookings(_rows)

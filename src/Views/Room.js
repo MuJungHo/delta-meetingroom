@@ -1,5 +1,6 @@
 import React, { useContext, useCallback } from "react";
 import { GlobalContext } from "../contexts/GlobalContext";
+import { useHistory } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
 import {
   Table,
@@ -10,6 +11,7 @@ import {
   BorderColorSharp,
   Delete,
   AddBox,
+  CalendarToday
 } from '@material-ui/icons';
 
 // import {
@@ -18,6 +20,7 @@ import {
 // } from '@material-ui/core';
 
 import RoomSection from "../components/room/RoomSection";
+import TodayBooking from "../components/booking/TodayBooking";
 
 const initFilter = {
   order: "asc",
@@ -31,7 +34,7 @@ const User = () => {
   const { t, openDialog, closeDialog, openSnackbar, openWarningDialog, authedApi } = useContext(GlobalContext);
   const [total, setTotal] = React.useState(0);
   const [filter, setFilter] = React.useState(initFilter);
-
+  const history = useHistory();
   const [roomList, setRoomList] = React.useState([]);
 
   const getRoomList = useCallback(async () => {
@@ -127,6 +130,7 @@ const User = () => {
           { name: t('add'), onClick: openAddRoomDialog, icon: <AddBox /> },
         ]}
         rowActions={[
+          { name: '預約', onClick: (e, row) => history.push(`/book/${row.id}`), icon: <CalendarToday /> },
           { name: t('edit'), onClick: (e, row) => openEditRoomDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}

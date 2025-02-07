@@ -94,7 +94,7 @@ export default ({
         </div>
         <div className={classes.info}>
           <Text>{t("datetime")}</Text>
-          <Text>{`${state.startDate} ${state.startTime}:00 - ${state.endTime}:00`}</Text>
+          <Text>{`${state.startDate} ${state.startTime}:00 - ${state.startTime + 1}:00`}</Text>
         </div>
         <div className={classes.info}>
           <Text>{t("frequency")}</Text>

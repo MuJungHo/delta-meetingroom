@@ -42,10 +42,10 @@ const useStyles = makeStyles({
 })
 
 const getCurrentTimeIndex = () => {
-  let currTime = []
+  let currTime = null
   for (let i = 0; i < 23; i++) {
     if (moment().isBetween(moment().startOf('day').add(i, 'hours'), moment().startOf('day').add(i + 1, 'hours'))) {
-      currTime = [i, i + 1]
+      currTime = i
     }
   }
   return currTime
@@ -62,9 +62,9 @@ export default ({
   const [state, setState] = React.useState({
     date,
     frequency: "once",
-    startTime: getCurrentTimeIndex()[0],
+    startTime: getCurrentTimeIndex(),
     startDate: date,
-    endDate: null,
+    endDate: date,
     userId: "",
     roomId: "",
     name: ""

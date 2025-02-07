@@ -7,8 +7,10 @@ import Avaliable from '../Views/Avaliable';
 import {
   ManageAccount,
   MeetingRoom,
-  CalendarMonth
+  CalendarMonth,
+  EventAvailable
 } from "../images/icons";
+
 
 const routes = [
   {
@@ -26,17 +28,19 @@ const routes = [
     sider: true
   },
   {
-    path: "/book",
+    path: "/book/:roomId",
     name: "_book",
     component: Book,
     icon: CalendarMonth,
+    sider: false,
+  },
+  {
+    path: "/avaliable",
+    name: "avaliable",
+    component: Avaliable,
+    icon: EventAvailable,
     sider: true,
   },
-  // {
-  //   path: "/avaliable",
-  //   name: "avaliable",
-  //   component: Avaliable,
-  // },
   // {
   //   path: "/booking",
   //   name: "booking",
