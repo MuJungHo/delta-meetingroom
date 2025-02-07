@@ -5,7 +5,6 @@ import { Chip, Tooltip, Button } from "@material-ui/core";
 import moment from "moment";
 import Booking from "./Booking";
 import AllBooking from "./AllBooking";
-import TodayBooking from "./TodayBooking";
 import Information from "./Information";
 import { GlobalContext } from "../../contexts/GlobalContext";
 

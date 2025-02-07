@@ -131,7 +131,7 @@ export default ({
             })}
           />
         </div>
-        <div className={classes.info}>
+        {/* <div className={classes.info}>
           <Text>{t("room")}</Text>
           <Select
             value={state.roomId || ""}
@@ -142,7 +142,7 @@ export default ({
               rooms.map(room => <MenuItem key={room.id} value={room.id}>{room.name}</MenuItem>)
             }
           </Select>
-        </div>
+        </div> */}
         <div className={classes.info}>
           <Text>{t("datetime")}</Text>
           <div style={{

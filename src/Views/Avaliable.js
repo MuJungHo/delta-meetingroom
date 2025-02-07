@@ -12,7 +12,7 @@ import {
   AddBox,
   CalendarToday
 } from '@material-ui/icons';
-import TodayBooking from "../components/booking/TodayBooking";
+import QuickBooking from "../components/booking/QuickBooking";
 import moment from "moment";
 
 const initFilter = {
@@ -47,16 +47,37 @@ const User = () => {
       endDateUnix: moment().unix(),
       startTime: getCurrentTimeIndex()
     })
+
+    avaliables = avaliables.map(item => ({ ...item, _id: item.id }))
     setAvailabelRoomList(avaliables)
 
   }, [filter])
 
   const handleViewTodayBooking = (room) => {
     openDialog({
-      title: '今日預約',
-      section: <TodayBooking room={room} />
+      title: '快速預約',
+      section: <QuickBooking room={room} onConfirm={handleCreateBooking} />
     })
   }
+
+  const handleCreateBooking = async (booking) => {
+    // return console.log(booking)
+    const data = {
+      roomId: booking.roomId,
+      frequency: booking.frequency,
+      startDate: moment(booking.startDate).format("YYYY-MM-DD"),
+      endDate: booking.endDate ? moment(booking.endDate).format("YYYY-MM-DD") : null,
+      startTime: booking.startTime,
+      name: booking.name
+    };
+    await authedApi.postCreateBooking({
+      data
+    })
+    closeDialog()
+    getAvaliableRoom()
+    // console.log(booking)
+  }
+
 
 
   React.useEffect(() => {

@@ -87,7 +87,7 @@ export default () => {
   const handleCreateBooking = async (booking) => {
     // return console.log(booking)
     const data = {
-      roomId: booking.roomId,
+      roomId: roomId,
       frequency: booking.frequency,
       startDate: moment(booking.startDate).format("YYYY-MM-DD"),
       endDate: booking.endDate ? moment(booking.endDate).format("YYYY-MM-DD") : null,

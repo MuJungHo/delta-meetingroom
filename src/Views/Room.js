@@ -20,7 +20,6 @@ import {
 // } from '@material-ui/core';
 
 import RoomSection from "../components/room/RoomSection";
-import TodayBooking from "../components/booking/TodayBooking";
 
 const initFilter = {
   order: "asc",
@@ -105,7 +104,7 @@ const User = () => {
       onConfirm: () => handleDeleteRoom(room)
     })
   }
-
+  
   return (
     <Paper style={{ margin: 20 }}>
       <Table
