@@ -1,14 +1,14 @@
 import React, { useContext, useCallback } from "react";
 import Calendar from "../components/booking/Calendar";
-import { ArrowBackIos, ArrowForwardIos, Today } from '@material-ui/icons';
+import { ArrowBackIos, ArrowForwardIos, Today, ArrowBack } from '@material-ui/icons';
 import { Button } from "../components/common";
 import moment from "moment";
 import { GlobalContext } from "../contexts/GlobalContext";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 export default () => {
   const dt = new Date();
   const { roomId } = useParams();
-  
+  const history = useHistory()
   const { closeDialog, authedApi } = useContext(GlobalContext);
   const [year, setYear] = React.useState(dt.getFullYear());
   const [month, setMonth] = React.useState(dt.getMonth());
@@ -105,10 +105,13 @@ export default () => {
   return (
     <>
       <div style={{ display: 'flex', alignItems: 'center' }}>
-        <Button onClick={handleCheckToday}><Today /></Button>
+        <Button onClick={() => history.push('/room')}><ArrowBack />回上一頁</Button>
+        <div style={{ flex: 1 }} />
         <Button onClick={handleLowerMonth}><ArrowBackIos /></Button>
-        <Button onClick={handleHigherMonth}><ArrowForwardIos /></Button>
+        {/* <Button onClick={handleCheckToday}><Today /></Button> */}
         <h5>{`${year}/${month + 1}`}</h5>
+        <Button onClick={handleHigherMonth}><ArrowForwardIos /></Button>
+        <div style={{ flex: 1 }} />
       </div>
       <Calendar
         dates={dates}

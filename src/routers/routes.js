@@ -3,7 +3,6 @@ import Room from '../Views/Room';
 import Book from '../Views/Book';
 import Avaliable from '../Views/Avaliable';
 
-
 import {
   ManageAccount,
   MeetingRoom,
@@ -36,7 +35,7 @@ const routes = [
   },
   {
     path: "/avaliable",
-    name: "avaliable",
+    name: "快速預約",
     component: Avaliable,
     icon: EventAvailable,
     sider: true,

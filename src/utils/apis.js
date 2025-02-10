@@ -45,7 +45,6 @@ export const api = (logout = () => { }) => {
     deleteRoom: ({ ...rest }) => promise_(instance.delete('/room/delete', { params: { ...rest } })),
 
     getBookingList: ({ ...rest }) => promise_(instance.get('/booking/list', { params: { ...rest } })),
-    getAvaliableBooking: ({ ...rest }) => promise_(instance.get('/booking/avaliable', { params: { ...rest } })),
     getBooking: ({ ...rest }) => promise_(instance.get('/booking', { params: { ...rest } })),
     postCreateBooking: ({ data }) => promise_(instance.post('/booking/create', { ...data })),
     putUpdateBooking: ({ data, ...rest }) => promise_(instance.put('/booking/update', { ...data }, { params: { ...rest } })),

@@ -11,7 +11,8 @@ import {
   BorderColorSharp,
   Delete,
   AddBox,
-  CalendarToday
+  CalendarToday,
+  EventNote
 } from '@material-ui/icons';
 
 // import {
@@ -104,7 +105,7 @@ const User = () => {
       onConfirm: () => handleDeleteRoom(room)
     })
   }
-  
+
   return (
     <Paper style={{ margin: 20 }}>
       <Table
@@ -129,7 +130,7 @@ const User = () => {
           { name: t('add'), onClick: openAddRoomDialog, icon: <AddBox /> },
         ]}
         rowActions={[
-          { name: '預約', onClick: (e, row) => history.push(`/book/${row.id}`), icon: <CalendarToday /> },
+          { name: '預約', onClick: (e, row) => history.push(`/book/${row.id}`), icon: <EventNote /> },
           { name: t('edit'), onClick: (e, row) => openEditRoomDialog(row), icon: <BorderColorSharp /> },
           { name: t('delete'), onClick: (e, row) => handleSetWarningDialog(row), icon: <Delete /> }
         ]}

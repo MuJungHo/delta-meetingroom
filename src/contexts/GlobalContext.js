@@ -55,7 +55,7 @@ function GlobalProvider({ children, ...rest }) {
     warning: false,
     section: <></>
   })
-  // console.log(typeof dialog.onConfirm === "function")
+  // console.log(dialog)
 
   const dialogStyle = theme === "dark" ? dark_palette.paper : lighten_palette.paper
 
@@ -153,8 +153,10 @@ function GlobalProvider({ children, ...rest }) {
           </Alert>
         </Snackbar>
         <Dialog
-          {...dialog}
-          warning=""
+          // {...dialog}
+          // title=""
+          // warning=""
+          maxWidth={dialog.maxWidth}
           onClose={() => setDialog({ ...dialog, open: false })}
           open={dialog.open}
         >
