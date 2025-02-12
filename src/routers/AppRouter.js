@@ -1,7 +1,7 @@
 import React, {
   // useContext
 } from 'react'
-import { Switch, HashRouter } from 'react-router-dom'
+import { Switch, HashRouter, Route } from 'react-router-dom'
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import routes from './routes'
@@ -18,17 +18,16 @@ const AppRouter = () => {
         <PublicRoute path="/login">
           <Login />
         </PublicRoute>
-        <Layout>
-          {
-            routes
-              // .filter(route => route.roles.includes(role))
-              .map(route =>
-                <PrivateRoute key={route.path} path={route.path} exact={route.exact}>
-                  {route.component && <route.component />}
-                </PrivateRoute>)
-          }
-          {/* <Redirect to='/' /> */}
-        </Layout>
+        {
+          routes
+            // .filter(route => route.roles.includes(role))
+            .map(route =>
+              <PrivateRoute key={route.path} path={route.path} exact={route.exact}>
+                {route.component && <route.component />}
+              </PrivateRoute>)
+        }
+        {/* <Layout>
+        </Layout> */}
       </Switch>
     </HashRouter>
   )

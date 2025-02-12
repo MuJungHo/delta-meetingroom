@@ -2,7 +2,7 @@ import User from '../Views/User';
 import Room from '../Views/Room';
 import Book from '../Views/Book';
 import Avaliable from '../Views/Avaliable';
-
+import NotFound from '../Views/404';
 import {
   ManageAccount,
   MeetingRoom,
@@ -17,7 +17,8 @@ const routes = [
     name: "_user",
     component: User,
     icon: ManageAccount,
-    sider: true
+    sider: true,
+    exact: true
   },
   {
     path: "/room",
@@ -40,11 +41,11 @@ const routes = [
     icon: EventAvailable,
     sider: true,
   },
-  // {
-  //   path: "/booking",
-  //   name: "booking",
-  //   component: Booking,
-  // },
+  {
+    path: "*",
+    name: "404",
+    component: NotFound,
+  },
 ]
 
 export default routes

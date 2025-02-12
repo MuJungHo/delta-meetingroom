@@ -11,16 +11,17 @@ function PublicRoute({
       {...rest}
       render={
         ({ location }) => (
-          !token ? (
-            children
-          ) : (
-            <Redirect
-              to={{
-                pathname: '/user',
-                state: { from: location }
-              }}
-            />
-          ))
+          token
+            ? (
+              <Redirect
+                to={{
+                  pathname: '/user',
+                  state: { from: location }
+                }}
+              />
+            ) : (
+              children
+            ))
       }
     />
   );
