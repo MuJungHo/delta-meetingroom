@@ -1,13 +1,16 @@
 import React, {
   // useContext
 } from 'react'
-import { Switch, HashRouter, Route } from 'react-router-dom'
+import { Switch, HashRouter, Route } from 'react-router-dom';
+import PadPrivateRoute from './PadPrivateRoute';
+import PadPublicRoute from './PadPublicRoute';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import routes from './routes'
 import Login from "../Views/Login";
-import Layout from '../components/layout/Layout';
-// import { AuthContext } from "../contexts/AuthContext";
+import PadLogin from "../Views/PadLogin";
+import Pad from "../Views/Pad";
+
 
 const AppRouter = () => {
   // const { role } = useContext(AuthContext);
@@ -15,6 +18,12 @@ const AppRouter = () => {
   return (
     <HashRouter>
       <Switch>
+        <PadPublicRoute path="/pad-login">
+          <PadLogin />
+        </PadPublicRoute>
+        <PadPrivateRoute path="/pad">
+          <Pad />
+        </PadPrivateRoute>
         <PublicRoute path="/login">
           <Login />
         </PublicRoute>
@@ -26,8 +35,6 @@ const AppRouter = () => {
                 {route.component && <route.component />}
               </PrivateRoute>)
         }
-        {/* <Layout>
-        </Layout> */}
       </Switch>
     </HashRouter>
   )

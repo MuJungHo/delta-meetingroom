@@ -4,7 +4,16 @@ const AuthContext = createContext();
 
 function AuthProvider(props) {
   const [token, setToken] = useState(localStorage.getItem('token'));
+  const [padToken, setPadToken] = useState(localStorage.getItem('pad-token'));
   const [keep, setKeep] = useState(localStorage.getItem('keep') === "1");
+
+  const padLogin = async (jwtToken) => {
+    instance.defaults.headers.common['Authorization'] = jwtToken;
+    
+    setPadToken(jwtToken);
+
+    localStorage.setItem('pad-token', jwtToken);
+  };
 
   const login = async (jwtToken) => {
 
@@ -20,7 +29,7 @@ function AuthProvider(props) {
   };
 
   const logout = () => {
-    
+
     delete instance.defaults.headers.common["Authorization"];
 
     setToken(null);
@@ -32,7 +41,9 @@ function AuthProvider(props) {
     token,
     login,
     logout,
-    setKeep
+    setKeep,
+    padLogin,
+    padToken,
   };
 
   return <AuthContext.Provider value={value} {...props} />;

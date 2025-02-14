@@ -41,11 +41,11 @@ const routes = [
     icon: EventAvailable,
     sider: true,
   },
-  {
-    path: "*",
-    name: "404",
-    component: NotFound,
-  },
+  // {
+  //   path: "*",
+  //   name: "404",
+  //   component: NotFound,
+  // },
 ]
 
 export default routes
