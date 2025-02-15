@@ -12,8 +12,8 @@ import { DarkMode, LightMode } from "../images/icons";
 import Avatar from '@material-ui/core/Avatar';
 import LanguageSharpIcon from '@material-ui/icons/LanguageSharp';
 import SettingIcon from '@material-ui/icons/Settings';
-import QuickBook from "../components/pad/QuickBook";
-import Checkin from "../components/pad/Checkin";
+import QuickBook from "../components/client/QuickBook";
+import Checkin from "../components/client/Checkin";
 
 const useStyles = makeStyles({
   button: {
@@ -49,16 +49,16 @@ export default () => {
 
   const classes = useStyles();
 
-  const getRoomMe = async () => {
+  const getClientMe = async () => {
     // if (!padId) return
-    let _room = await authedApi.getRoomMe({})
+    let _room = await authedApi.getClientMe({})
 
     setRoom(_room)
   }
 
-  const getRoomBookingList = async () => {
+  const getClientBookingList = async () => {
     // if (!padId) return
-    let { rows } = await authedApi.getRoomBookingList({
+    let { rows } = await authedApi.getClientBookingList({
       startDateUnix: moment().unix(),
       endDateUnix: moment().unix(),
       startTime: 0
@@ -73,7 +73,7 @@ export default () => {
   }
 
   React.useEffect(() => {
-    // getRoomBookingList()
+    // getClientBookingList()
     let url = `ws://localhost:8080/?token=${padToken}`;
     var ws = new WebSocket(url)
     // 監聽連線狀態
@@ -85,14 +85,14 @@ export default () => {
     }
     //接收 Server 發送的訊息
     ws.onmessage = event => {
-      getRoomBookingList()
+      getClientBookingList()
     }
-    getRoomMe()
+    getClientMe()
   }, [])
 
   const handleOpenQuickBook = () => {
     openDialog({
-      title: '快速預約',
+      // title: '快速預約',
       maxWidth: "lg",
       section: <QuickBook onConfirm={handleQuickBook} />
     })
@@ -101,6 +101,7 @@ export default () => {
   const handleQuickBook = async (state) => {
     await authedApi.postClientBooking({
       data: {
+        name: state.name,
         account: state.account,
         password: state.password,
         startTime: getCurrentTimeIndex(),
@@ -111,15 +112,14 @@ export default () => {
       }
     })
     closeDialog()
-    getRoomMe()
+    getClientMe()
     // console.log(state)
-    // getRoomBookingList()
+    // getClientBookingList()
   }
 
   const handleCheckIn = () => {
 
     openDialog({
-      title: '預約報到',
       maxWidth: "lg",
       section: <Checkin onConfirm={handleCheckin} />
     })
@@ -135,8 +135,8 @@ export default () => {
     })
     closeDialog()
     // console.log(state)
-    getRoomMe()
-    getRoomBookingList()
+    getClientMe()
+    getClientBookingList()
   }
 
 
@@ -146,8 +146,8 @@ export default () => {
     <div style={{
       display: 'flex', flexDirection: 'column', height: '100vh',
       backgroundColor: room.available
-        ? bookingTimes.includes(getCurrentTimeIndex()) ? 'orange' : 'green'
-        : 'red'
+        ? bookingTimes.includes(getCurrentTimeIndex()) ? 'orange' : 'SeaGreen'
+        : 'Salmon'
     }}>
       {/* <div style={{ display: 'flex', marginRight: 10, height: 36 }}>
         <div style={{ flex: 1 }} />

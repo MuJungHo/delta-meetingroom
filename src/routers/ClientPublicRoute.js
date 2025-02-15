@@ -15,7 +15,7 @@ function PadPublicRoute({
             ? (
               <Redirect
                 to={{
-                  pathname: '/pad',
+                  pathname: '/client',
                   state: { from: location }
                 }}
               />

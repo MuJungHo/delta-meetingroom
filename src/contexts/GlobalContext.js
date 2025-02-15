@@ -160,7 +160,7 @@ function GlobalProvider({ children, ...rest }) {
           onClose={() => setDialog({ ...dialog, open: false })}
           open={dialog.open}
         >
-          <DialogTitle
+          {dialog.title && <DialogTitle
             disableTypography
             style={{
               backgroundColor: dialogStyle.background,
@@ -175,7 +175,7 @@ function GlobalProvider({ children, ...rest }) {
             }} onClick={() => setDialog({ ...dialog, open: false })}>
               <Close />
             </IconButton>
-          </DialogTitle>
+          </DialogTitle>}
           {dialog.section}
         </Dialog>
         {children}

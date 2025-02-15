@@ -18,7 +18,7 @@ function PadPrivateRoute({
             ) : (
               <Redirect
                 to={{
-                  pathname: '/pad-login',
+                  pathname: '/client-login',
                   state: { from: location }
                 }}
               />

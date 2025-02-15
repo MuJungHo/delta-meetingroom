@@ -71,13 +71,13 @@ const Login = () => {
   const { t, authedApi } = useContext(GlobalContext);
 
   if (padToken) {
-    return <Redirect to="/pad" />
+    return <Redirect to="/client" />
   }
 
   const handleLogin = async (event) => {
     event.preventDefault();
 
-    const { token, room } = await authedApi.postRoomLogin({ data: { account, password } });
+    const { token, room } = await authedApi.postClientLogin({ data: { account, password } });
     // console.log({ token, room })
     padLogin(token, room.id);
   }

@@ -45,9 +45,6 @@ export const api = (logout = () => { }) => {
     postCreateRoom: ({ data }) => promise_(instance.post('/room/create', { ...data })),
     putUpdateRoom: ({ data, ...rest }) => promise_(instance.put('/room/update', { ...data }, { params: { ...rest } })),
     deleteRoom: ({ ...rest }) => promise_(instance.delete('/room/delete', { params: { ...rest } })),
-    postRoomLogin: ({ data }) => promise_(instance.post('/room/login', { ...data })),
-    getRoomBookingList: ({ ...rest }) => promise_(instance.get('/room/booking-list', { params: { ...rest } })),
-    getRoomMe: ({ ...rest }) => promise_(instance.get('/room/me', { params: { ...rest } })),
 
     getBookingList: ({ ...rest }) => promise_(instance.get('/booking/list', { params: { ...rest } })),
     getBooking: ({ ...rest }) => promise_(instance.get('/booking', { params: { ...rest } })),
@@ -57,8 +54,10 @@ export const api = (logout = () => { }) => {
 
     postClientBooking: ({ data }) => promise_(instance.post('/client/booking', { ...data })),
     putClientChecking: ({ data }) => promise_(instance.put('/client/checkin', { ...data })),
+    getClientBookingList: ({ ...rest }) => promise_(instance.get('/client/booking-list', { params: { ...rest } })),
+    getClientMe: ({ ...rest }) => promise_(instance.get('/client/me', { params: { ...rest } })),
+    postClientLogin: ({ data }) => promise_(instance.post('/client/login', { ...data })),
 
-    
   }
 }
 

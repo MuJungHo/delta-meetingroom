@@ -66,8 +66,9 @@ export default withStyles(theme => ({
           </InputAdornment>
         ) : undefined
   }}
-  inputProps={{
-    style: {
-      ...props.inputProps,
-    }
-  }} />)
+// inputProps={{
+//   style: {
+//     ...props.inputProps,
+//   }
+// }} 
+/>)

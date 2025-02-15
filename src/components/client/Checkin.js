@@ -22,7 +22,7 @@ const useStyles = makeStyles({
     // width: '100%',
     alignItems: 'center',
     minHeight: 45,
-    margin: '6px 0',
+    margin: '36px 0',
     flex: 1,
     '& > *:first-child': {
       minWidth: '30%',
@@ -31,6 +31,13 @@ const useStyles = makeStyles({
     '& > *:not(:first-child)': {
       flex: '1 1 auto'
     },
+  },
+  button: {
+    // padding: 24,
+    borderRadius: 8,
+    '& > span': {
+      fontSize: 36,
+    }
   },
 })
 
@@ -45,34 +52,42 @@ export default ({
     password: ""
   })
 
+  const fontSize = 36
+
   return (
     <>
       <DialogContent
         dividers
         style={{
-          width: 500
+          width: 800,
+          padding: '0px 36px'
         }}>
         <div className={classes.info}>
-          <Text>{t("account")}</Text>
-          <TextField type="text" value={state.account} onChange={e => setState({
-            ...state,
-            account: e.target.value
-          })} />
+          <Text style={{ fontSize }}>{t("account")}</Text>
+          <TextField
+            inputProps={{ style: { fontSize } }}
+            value={state.account} onChange={e => setState({
+              ...state,
+              account: e.target.value
+            })} />
         </div>
         <div className={classes.info}>
-          <Text>{t("password")}</Text>
-          <TextField type="password" value={state.password} onChange={e => setState({
-            ...state,
-            password: e.target.value
-          })} />
+          <Text style={{ fontSize }}>{t("password")}</Text>
+          <TextField
+            type="password"
+            inputProps={{ style: { fontSize } }}
+            value={state.password} onChange={e => setState({
+              ...state,
+              password: e.target.value
+            })} />
         </div>
       </DialogContent >
-      <DialogActions>
-        <Button onClick={() => onConfirm(state)}>
-          {t("預約")}
-        </Button>
-        <Button onClick={closeDialog}>
+      <DialogActions style={{ padding: '18px 36px' }}>
+        <Button className={classes.button} onClick={closeDialog}>
           {t("close")}
+        </Button>
+        <Button className={classes.button} variant="contained" color="primary" onClick={() => onConfirm(state)}>
+          {t("confirm")}
         </Button>
       </DialogActions>
     </>

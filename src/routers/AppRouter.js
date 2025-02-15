@@ -2,14 +2,14 @@ import React, {
   // useContext
 } from 'react'
 import { Switch, HashRouter, Route } from 'react-router-dom';
-import PadPrivateRoute from './PadPrivateRoute';
-import PadPublicRoute from './PadPublicRoute';
+import ClientPrivateRoute from './ClientPrivateRoute';
+import ClientPublicRoute from './ClientPublicRoute';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import routes from './routes'
 import Login from "../Views/Login";
-import PadLogin from "../Views/PadLogin";
-import Pad from "../Views/Pad";
+import ClientLogin from "../Views/ClientLogin";
+import Client from "../Views/Client";
 
 
 const AppRouter = () => {
@@ -18,12 +18,12 @@ const AppRouter = () => {
   return (
     <HashRouter>
       <Switch>
-        <PadPublicRoute path="/pad-login">
-          <PadLogin />
-        </PadPublicRoute>
-        <PadPrivateRoute path="/pad">
-          <Pad />
-        </PadPrivateRoute>
+        <ClientPublicRoute path="/client-login">
+          <ClientLogin />
+        </ClientPublicRoute>
+        <ClientPrivateRoute path="/client">
+          <Client />
+        </ClientPrivateRoute>
         <PublicRoute path="/login">
           <Login />
         </PublicRoute>
