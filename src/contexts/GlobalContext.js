@@ -166,14 +166,19 @@ function GlobalProvider({ children, ...rest }) {
               backgroundColor: dialogStyle.background,
               color: dialogStyle.color
             }}
-          ><Typography variant="h6">{dialog.title}</Typography>
+          >
+            <span style={{
+              fontSize: dialog.titleFontSize || 16
+            }}>{dialog.title}</span>
             <IconButton style={{
               color: dialogStyle.color,
               position: 'absolute',
               right: 8,
               top: 8,
             }} onClick={() => setDialog({ ...dialog, open: false })}>
-              <Close />
+              <Close style={{
+                fontSize: dialog.titleFontSize || 21
+              }} />
             </IconButton>
           </DialogTitle>}
           {dialog.section}
@@ -181,7 +186,7 @@ function GlobalProvider({ children, ...rest }) {
         {children}
       </ThemeProvider>
     </CustomProvider>
-  </GlobalContext.Provider>;
+  </GlobalContext.Provider >;
 }
 
 export { GlobalContext, GlobalProvider };

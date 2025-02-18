@@ -15,6 +15,9 @@ import {
 } from "../common";
 
 import moment from "moment";
+const scale = window.innerWidth / 1920;
+
+const fontSize = 24 / scale
 
 const useStyles = makeStyles({
   info: {
@@ -22,21 +25,21 @@ const useStyles = makeStyles({
     // width: '100%',
     alignItems: 'center',
     minHeight: 45,
-    margin: '36px 0',
+    margin: `${20 / scale}px 0`,
     flex: 1,
     '& > *:first-child': {
       minWidth: '30%',
-      marginRight: 20
+      marginRight: 20 /scale
     },
     '& > *:not(:first-child)': {
       flex: '1 1 auto'
     },
   },
   button: {
-    // padding: 24,
+    padding: `${6 / scale}px ${16 / scale}px`,
     borderRadius: 8,
     '& > span': {
-      fontSize: 36,
+      fontSize,
     }
   },
 })
@@ -53,15 +56,13 @@ export default ({
     password: ""
   })
 
-  const fontSize = 48
-
   return (
     <>
       <DialogContent
         dividers
         style={{
           width: 800,
-          padding: '0px 36px'
+          padding: `0px ${20 / scale}px`
         }}>
         <div className={classes.info}>
           <Text style={{ fontSize }}>{t("name")}</Text>
@@ -90,7 +91,7 @@ export default ({
             })} />
         </div>
       </DialogContent >
-      <DialogActions style={{ padding: '18px 36px' }}>
+      <DialogActions style={{ padding: `${20 / scale}px` }}>
         <Button className={classes.button} onClick={closeDialog}>
           {t("close")}
         </Button>

@@ -43,11 +43,13 @@ export default () => {
 
   const [room, setRoom] = useState({});
   const [currentBooking, setCurrentBooking] = useState({});
-  const [bookings, setBookings] = useState([]);
+  // const [bookings, setBookings] = useState([]);
   const [bookingTimes, setBookingTimes] = useState([]);
-
-
+  const [counter, setCounter] = useState(0);
+  const currentDate = moment().format("YYYY/MM/DD")
   const classes = useStyles();
+
+  const scale = window.innerWidth / 1920;
 
   const getClientMe = async () => {
     // if (!padId) return
@@ -65,12 +67,33 @@ export default () => {
     })
     // const _rows = rows.map(a => ({ ...a, _id: a.id }))
     const _rows = rows.map(a => a.startTime);
-    setBookings(rows)
+    // setBookings(rows)
     setBookingTimes(_rows)
 
     const _currentBooking = rows.find(booking => booking.startTime === getCurrentTimeIndex()) || {};
+    const seconds = moment(`${_currentBooking.startDate} ${_currentBooking.startTime}:00:00`).add(1, 'h').unix() - moment().unix() || 0
+
+
+    setCounter(seconds);
     setCurrentBooking(_currentBooking)
   }
+
+  React.useEffect(() => {
+    if (JSON.stringify(currentBooking) === "{}") return
+
+    const intervalId = setInterval(() => {
+      setCounter((c) => {
+        if (c === 0) {
+          getClientBookingList();
+          clearInterval(intervalId)
+        }
+        return c - 1
+      })
+    }, 1000)
+    // console.log(currentBooking)
+    return () => clearInterval(intervalId); //This is important
+
+  }, [currentBooking])
 
   React.useEffect(() => {
     // getClientBookingList()
@@ -92,7 +115,8 @@ export default () => {
 
   const handleOpenQuickBook = () => {
     openDialog({
-      // title: '快速預約',
+      titleFontSize: 36 / scale,
+      title: 'Quick Book',
       maxWidth: "lg",
       section: <QuickBook onConfirm={handleQuickBook} />
     })
@@ -121,6 +145,8 @@ export default () => {
 
     openDialog({
       maxWidth: "lg",
+      titleFontSize: 36 / scale,
+      title: 'Check in',
       section: <Checkin onConfirm={handleCheckin} />
     })
   }
@@ -130,7 +156,8 @@ export default () => {
       data: {
         account: state.account,
         password: state.password,
-        bookingId: currentBooking.id
+        bookingId: currentBooking.id,
+        date: moment().format("YYYY-MM-DD")
       }
     })
     closeDialog()
@@ -145,9 +172,11 @@ export default () => {
   return (
     <div style={{
       display: 'flex', flexDirection: 'column', height: '100vh',
-      backgroundColor: room.available
-        ? bookingTimes.includes(getCurrentTimeIndex()) ? 'orange' : 'SeaGreen'
-        : 'Salmon'
+      backgroundColor:
+        currentBooking?.checkinDates?.includes(moment().format("YYYY-MM-DD"))
+          ? 'salmon'
+          : bookingTimes.includes(getCurrentTimeIndex())
+            ? 'orange' : 'seagreen'
     }}>
       {/* <div style={{ display: 'flex', marginRight: 10, height: 36 }}>
         <div style={{ flex: 1 }} />
@@ -174,15 +203,18 @@ export default () => {
           justifyContent: 'center'
         }}>
           <div style={{ height: 250 }}>
-            <span style={{ fontSize: 90 }}>Room: {room.name}</span>
+            <span style={{ fontSize: 120 }}>{room.name}</span>
           </div>
-          <div style={{ height: 200 }}>
-            {currentBooking.name && <span style={{ fontSize: 72 }}>Name: {currentBooking.name}</span>}
+          <div style={{ height: 150 }}>
+            {counter > 0 && <span style={{ fontSize: 72 }}>{`${Math.floor(counter / 60)}:${counter - Math.floor(counter / 60) * 60}`}</span>
+            }          </div>
+          <div style={{ height: 150 }}>
+            {currentBooking.name && <span style={{ fontSize: 72 }}>{currentBooking.name}</span>}
           </div>
           <div>
             <div>
               {
-                currentBooking.checkin
+                currentBooking?.checkinDates?.includes(moment().format("YYYY-MM-DD"))
                   ? <div style={{ height: 150 }}>
                     <span style={{ fontSize: 72 }}>Room In Use.</span>
                   </div>
@@ -221,9 +253,18 @@ export default () => {
         }}>
           {
             allTimes.map(time => <h3
-              style={{ color: bookingTimes.includes(time) ? 'white' : 'inherit' }}
+              style={{
+                color:
+                  bookingTimes.includes(time)
+                    ? 'white'
+                    : 'inherit',
+                opacity:
+                  moment(currentDate + " " + time + ":00").isBefore(moment(), "hour")
+                    ? .4
+                    : 1
+              }}
               key={time}>
-
+              {/* {currentDate + " " + time + ":00"} */}
               {`${time}:00 - ${time + 1}:00`}
             </h3>)
           }
