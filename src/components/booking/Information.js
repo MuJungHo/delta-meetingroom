@@ -52,21 +52,21 @@ export default ({
   const { closeDialog, t, authedApi, openDialog } = useContext(GlobalContext);
 
   const [state, setState] = React.useState({});
-  const [users, setUsers] = React.useState([]);
-  const [rooms, setRooms] = React.useState([]);
+  // const [users, setUsers] = React.useState([]);
+  // const [rooms, setRooms] = React.useState([]);
 
   React.useEffect(() => {
     // getUserList();
-    getRoomList();
+    // getRoomList();
     if (bookingId) getBookingByBookingId()
   }, [bookingId])
 
-  const getRoomList = async () => {
-    let { rows } = await authedApi.getRoomList({})
+  // const getRoomList = async () => {
+  //   let { rows } = await authedApi.getRoomList({})
 
-    const _rows = rows.map(a => ({ ...a, _id: a.id }))
-    setRooms(_rows)
-  }
+  //   const _rows = rows.map(a => ({ ...a, _id: a.id }))
+  //   setRooms(_rows)
+  // }
 
   const getBookingByBookingId = async () => {
     let booking = await authedApi.getBooking({ id: bookingId });
@@ -77,7 +77,7 @@ export default ({
     openDialog({
       title: `編輯${state.name}`,
       maxWidth: "lg",
-      section: <Booking booking={state} onConfirm={handleUpdateBooking} />
+      section: <Booking bookingId={state.id} onConfirm={handleUpdateBooking} />
     })
   }
 

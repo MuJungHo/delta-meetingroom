@@ -144,7 +144,7 @@ const OpenMultiLevel = ({ route }) => {
   const { children } = route;
   const { t } = useContext(GlobalContext);
   const { role } = useContext(AuthContext);
-  const [open, setOpen] = React.useState(route.children.findIndex(child => child.path === location.pathname) > -1);
+  const [open, setOpen] = React.useState(route.children.findIndex(child => child === location.pathname) > -1);
 
   const handleClick = () => {
     setOpen((prev) => !prev);

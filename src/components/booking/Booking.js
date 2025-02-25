@@ -54,6 +54,8 @@ const getCurrentTimeIndex = () => {
 export default ({
   onConfirm = () => { },
   date = null,
+  startDate = null,
+  endDate = null,
   bookingId = null
 }) => {
   const classes = useStyles();
@@ -63,8 +65,8 @@ export default ({
     date,
     frequency: "once",
     startTime: getCurrentTimeIndex(),
-    startDate: date,
-    endDate: date,
+    startDate,
+    endDate,
     userId: "",
     roomId: "",
     name: ""
@@ -131,7 +133,7 @@ export default ({
             })}
           />
         </div>
-        {/* <div className={classes.info}>
+        <div className={classes.info}>
           <Text>{t("room")}</Text>
           <Select
             value={state.roomId || ""}
@@ -142,7 +144,7 @@ export default ({
               rooms.map(room => <MenuItem key={room.id} value={room.id}>{room.name}</MenuItem>)
             }
           </Select>
-        </div> */}
+        </div>
         <div className={classes.info}>
           <Text>{t("datetime")}</Text>
           <div style={{

@@ -88,7 +88,7 @@ const User = () => {
   return (
     <Paper style={{ margin: 20 }}>
       <Table
-        title={"空閒的會議室"}
+        title={"Avaliable"}
         rows={availabelRoomList}
         columns={[
           { key: 'name', label: t('name') }

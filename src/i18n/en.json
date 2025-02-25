@@ -91,7 +91,7 @@
     "user": "User",
     "user-profile": "User Profile",
     "welcome": "Welcome",
-    "_room": "Meeting Room",
+    "_room": "Room",
     "_user": "User",
     "400001": "Command execution timeout",
     "400002": "QueryString cannot be empty",

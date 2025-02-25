@@ -106,7 +106,7 @@ const User = () => {
   return (
     <Paper style={{ margin: 20 }}>
       <Table
-        title={t("thing-management", { thing: t("user") })}
+        title={t("user")}
         rows={accountList}
         columns={[
           { key: 'name', label: t('name') },
